@@ -17,7 +17,7 @@ export const COMMON_MISTAKES: ReadonlyArray<CommonMistake> = [
   {
     title: "Missing enrollment deadlines",
     detail:
-      "Summer programs fill fast — many close in March or April for June sessions. " +
+      "Summer programs fill fast. Many close in March or April for June sessions. " +
       "Set a calendar reminder each January to apply for the following summer.",
   },
   {
@@ -30,7 +30,7 @@ export const COMMON_MISTAKES: ReadonlyArray<CommonMistake> = [
   {
     title: "Letting AP and dual enrollment overlap",
     detail:
-      "If you're taking AP Psychology, don't also take Psych 1 at a CCC — you can't use both for the " +
+      "If you're taking AP Psychology, don't also take Psych 1 at a CCC. You can't use both for the " +
       "same Cal-GETC area. Use AP for subjects where you have the strongest shot at a 4 or 5; " +
       "use CCC for subjects with no AP option.",
   },

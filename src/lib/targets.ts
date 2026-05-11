@@ -22,7 +22,7 @@ export const TARGETS: Record<TargetKey, Target> = {
       "Important: UC grants elective and lower-division credit for dual enrollment units, " +
       "but a minimum residency requirement (36 upper-division units at the UC) means the " +
       "fastest realistic graduation is still 2 years. Units reduce lower-division course load " +
-      "significantly — freeing time for upper-division major coursework from day one.",
+      "significantly. Freeing time for upper-division major coursework from day one.",
   },
   csu: {
     key: "csu",
@@ -45,7 +45,7 @@ export const TARGETS: Record<TargetKey, Target> = {
     key: "undecided",
     label: "Undecided between UC and CSU",
     note:
-      "Follow the Cal-GETC path — it covers both UC and CSU and keeps all doors open. " +
+      "Follow the Cal-GETC path. It covers both UC and CSU and keeps all doors open. " +
       "The ADT is a CSU-specific tool; pursue it if CSU becomes the preference by 11th grade.",
   },
   transfer: {

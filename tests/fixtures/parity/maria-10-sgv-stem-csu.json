@@ -23,22 +23,22 @@
       {
         "priority": 1,
         "course": "English 1A",
-        "reason": "Cal-GETC Area 1 — always first; prerequisite for many courses"
+        "reason": "Cal-GETC Area 1. Always first; prerequisite for many courses"
       },
       {
         "priority": 2,
         "course": "Calculus 1",
-        "reason": "Cal-GETC Area 2 — foundational for all STEM majors"
+        "reason": "Cal-GETC Area 2. Foundational for all STEM majors"
       },
       {
         "priority": 3,
         "course": "Chemistry or Biology w/ Lab",
-        "reason": "Cal-GETC Area 5B — lab science requirement"
+        "reason": "Cal-GETC Area 5B. Lab science requirement"
       },
       {
         "priority": 4,
         "course": "Psychology or Sociology",
-        "reason": "Cal-GETC Area 4 — easiest GE to knock out"
+        "reason": "Cal-GETC Area 4. Easiest GE to knock out"
       },
       {
         "priority": 5,
@@ -67,18 +67,18 @@
       "is_current": false,
       "unit_target": "18–35 units",
       "summer_action": "This is the high-output summer. Max out the summer unit cap at your target college. Two courses minimum.",
-      "school_year_action": "2 dual enrollment courses + AP strategy. Don't double-count — if you're taking AP Psych, skip Psych 1 at the CCC. Use AP for overlapping subjects, CCC for subjects without an AP option.",
+      "school_year_action": "2 dual enrollment courses + AP strategy. Don't double-count. If you're taking AP Psych, skip Psych 1 at the CCC. Use AP for overlapping subjects, CCC for subjects without an AP option.",
       "milestone": "By end of 11th grade: 18–35 transferable units. Cal-GETC should be 50–75% complete.",
-      "warning": "Watch the unit caps — exceeding them can cause enrollment issues. Confirm limits with both your high school and the community college each semester."
+      "warning": "Watch the unit caps. Exceeding them can cause enrollment issues. Confirm limits with both your high school and the community college each semester."
     },
     {
       "grade": 12,
       "is_current": false,
       "unit_target": "30–60 units",
       "summer_action": "Summer before senior year: cement any remaining Cal-GETC gaps. By this summer you should have 25+ units already.",
-      "school_year_action": "Max out dual enrollment during senior year. If ADT is within reach, pursue it — the CSU admission guarantee is worth it. Request official transcripts from all CCCs attended by April.",
+      "school_year_action": "Max out dual enrollment during senior year. If ADT is within reach, pursue it. The CSU admission guarantee is worth it. Request official transcripts from all CCCs attended by April.",
       "milestone": "By high school graduation: 30–60 transferable units. Cal-GETC complete. ADT filed (if CSU-bound).",
-      "warning": "Apply for ADT by the deadline — it's not automatic. File with the Admissions office at your community college and have transcripts sent to CSU by the application deadline."
+      "warning": "Apply for ADT by the deadline. It's not automatic. File with the Admissions office at your community college and have transcripts sent to CSU by the application deadline."
     }
   ],
   "cal_getc_areas": [
@@ -94,12 +94,12 @@
     },
     {
       "code": "Area 3A",
-      "title": "Arts & Humanities — Arts",
+      "title": "Arts & Humanities (Arts)",
       "example": "Art History, Music, Film, or Theater"
     },
     {
       "code": "Area 3B",
-      "title": "Arts & Humanities — Humanities",
+      "title": "Arts & Humanities (Humanities)",
       "example": "Literature, Philosophy, or History"
     },
     {
@@ -109,12 +109,12 @@
     },
     {
       "code": "Area 5A",
-      "title": "Physical & Biological Sciences — Physical",
+      "title": "Physical & Biological Sciences (Physical)",
       "example": "Chemistry, Physics, or Astronomy"
     },
     {
       "code": "Area 5B",
-      "title": "Physical & Biological Sciences — Biological",
+      "title": "Physical & Biological Sciences (Biological)",
       "example": "Biology or Earth Science (w/ lab)"
     }
   ],
@@ -157,7 +157,7 @@
     {
       "number": 2,
       "title": "Missing enrollment deadlines",
-      "detail": "Summer programs fill fast — many close in March or April for June sessions. Set a calendar reminder each January to apply for the following summer."
+      "detail": "Summer programs fill fast. Many close in March or April for June sessions. Set a calendar reminder each January to apply for the following summer."
     },
     {
       "number": 3,
@@ -167,7 +167,7 @@
     {
       "number": 4,
       "title": "Letting AP and dual enrollment overlap",
-      "detail": "If you're taking AP Psychology, don't also take Psych 1 at a CCC — you can't use both for the same Cal-GETC area. Use AP for subjects where you have the strongest shot at a 4 or 5; use CCC for subjects with no AP option."
+      "detail": "If you're taking AP Psychology, don't also take Psych 1 at a CCC. You can't use both for the same Cal-GETC area. Use AP for subjects where you have the strongest shot at a 4 or 5; use CCC for subjects with no AP option."
     },
     {
       "number": 5,

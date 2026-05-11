@@ -19,12 +19,12 @@ export const CAL_GETC_AREAS: ReadonlyArray<CalGetcArea> = [
   },
   {
     code: "Area 3A",
-    title: "Arts & Humanities — Arts",
+    title: "Arts & Humanities (Arts)",
     example: "Art History, Music, Film, or Theater",
   },
   {
     code: "Area 3B",
-    title: "Arts & Humanities — Humanities",
+    title: "Arts & Humanities (Humanities)",
     example: "Literature, Philosophy, or History",
   },
   {
@@ -34,12 +34,12 @@ export const CAL_GETC_AREAS: ReadonlyArray<CalGetcArea> = [
   },
   {
     code: "Area 5A",
-    title: "Physical & Biological Sciences — Physical",
+    title: "Physical & Biological Sciences (Physical)",
     example: "Chemistry, Physics, or Astronomy",
   },
   {
     code: "Area 5B",
-    title: "Physical & Biological Sciences — Biological",
+    title: "Physical & Biological Sciences (Biological)",
     example: "Biology or Earth Science (w/ lab)",
   },
 ];

@@ -38,21 +38,21 @@ export const GRADE_PLANS: Record<GradeLevel, GradePlan> = {
     summer_action:
       "This is the high-output summer. Max out the summer unit cap at your target college. Two courses minimum.",
     school_year_action:
-      "2 dual enrollment courses + AP strategy. Don't double-count — if you're taking AP Psych, skip Psych 1 at the CCC. Use AP for overlapping subjects, CCC for subjects without an AP option.",
+      "2 dual enrollment courses + AP strategy. Don't double-count. If you're taking AP Psych, skip Psych 1 at the CCC. Use AP for overlapping subjects, CCC for subjects without an AP option.",
     milestone:
       "By end of 11th grade: 18–35 transferable units. Cal-GETC should be 50–75% complete.",
     warning:
-      "Watch the unit caps — exceeding them can cause enrollment issues. Confirm limits with both your high school and the community college each semester.",
+      "Watch the unit caps. Exceeding them can cause enrollment issues. Confirm limits with both your high school and the community college each semester.",
   },
   12: {
     unit_target: "30–60 units",
     summer_action:
       "Summer before senior year: cement any remaining Cal-GETC gaps. By this summer you should have 25+ units already.",
     school_year_action:
-      "Max out dual enrollment during senior year. If ADT is within reach, pursue it — the CSU admission guarantee is worth it. Request official transcripts from all CCCs attended by April.",
+      "Max out dual enrollment during senior year. If ADT is within reach, pursue it. The CSU admission guarantee is worth it. Request official transcripts from all CCCs attended by April.",
     milestone:
       "By high school graduation: 30–60 transferable units. Cal-GETC complete. ADT filed (if CSU-bound).",
     warning:
-      "Apply for ADT by the deadline — it's not automatic. File with the Admissions office at your community college and have transcripts sent to CSU by the application deadline.",
+      "Apply for ADT by the deadline. It's not automatic. File with the Admissions office at your community college and have transcripts sent to CSU by the application deadline.",
   },
 };
