@@ -49,10 +49,10 @@ export function IntakeForm() {
     }
     const parsed = IntakeSchema.safeParse(state.draft);
     if (!parsed.success) {
-      // TODO: Christopher — final error copy
       dispatch({
         type: "SUBMIT_FAIL",
-        error: "Something looks off with your answers. Please double-check each step.",
+        error:
+          "Something didn't add up. Step back through and double-check each answer.",
       });
       return;
     }
@@ -87,11 +87,10 @@ export function IntakeForm() {
       track("plan_submit_failed", {
         reason: err instanceof Error ? err.message.slice(0, 64) : "unknown",
       });
-      // TODO: Christopher — final submit error copy
       dispatch({
         type: "SUBMIT_FAIL",
         error:
-          "We couldn't build your plan right now. Please try again in a moment.",
+          "Our server had a hiccup — your answers are still here. Try the button again in a moment.",
       });
     }
   }
