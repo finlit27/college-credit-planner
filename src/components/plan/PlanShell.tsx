@@ -1,93 +1,86 @@
 import type { Plan } from "@/lib/schema";
+import { CollegeCard } from "./CollegeCard";
+import { CourseSequence } from "./CourseSequence";
+import { GradeRoadmap } from "./GradeRoadmap";
+import { CalGetcChecklist } from "./CalGetcChecklist";
+import { SavingsTable } from "./SavingsTable";
+import { ActionChecklist } from "./ActionChecklist";
+import { CommonMistakes } from "./CommonMistakes";
+import { ShareButton } from "./ShareButton";
 
 /**
- * Phase E1 skeleton. Renders the plan hero + section placeholders.
- * Phases E2–E6 replace each <section> with real components
- * (CollegeCard, CourseSequence, GradeRoadmap, CalGetcChecklist,
- *  SavingsTable, ActionChecklist, CommonMistakes, NarrativeBlock,
- *  ShareButton, NewsletterOptIn).
+ * Top-level plan layout. Each child is a pure, single-purpose render
+ * component that takes flat props from the Plan object.
+ *
+ * Order mirrors the CLI's markdown narrative so the web plan reads in
+ * the same shape as the source-of-truth plan that has been validated
+ * with families.
+ *
+ * NarrativeBlock (E4) + NewsletterOptIn (E6) will slot in once
+ * /api/narrative and /api/newsletter exist (Phase C2 / C3).
  */
 export function PlanShell({ plan }: { plan: Plan }) {
-  const { student, target, college, online_only } = plan;
+  const { student, target, online_only, college } = plan;
+
   return (
     <article className="container mx-auto px-4 py-10 sm:py-16">
       <header className="max-w-3xl mx-auto text-center">
         <p className="text-xs uppercase tracking-wider text-[#B68D40] font-medium">
           College Credit Plan
         </p>
-        <h1 className="mt-3 font-serif text-3xl sm:text-5xl text-[#1B4332] font-semibold leading-tight">
+        <h1 className="mt-3 font-serif text-3xl sm:text-5xl text-[#1B4332] font-semibold leading-tight tracking-tight">
           {student.name}&apos;s plan to graduate with{" "}
           <span className="text-[#B68D40]">college credit already done.</span>
         </h1>
         <p className="mt-4 text-base sm:text-lg text-[#4A5568]">
           Grade {student.grade} · Aiming for {target.label}
-          {online_only ? " · Online-only" : ""}
+          {online_only ? " · Fully online" : ""}
         </p>
+        {student.gpa_status === "alert" ? (
+          <p className="mt-3 inline-block text-sm text-[#B68D40] bg-[#B68D40]/10 border border-[#B68D40]/20 rounded-full px-3 py-1">
+            {/* TODO: Christopher — final GPA-alert copy */}
+            Heads-up: most colleges still accept you with this GPA, but a few
+            ask for a 2.0+ — confirm with {college.name} before you apply.
+          </p>
+        ) : null}
       </header>
 
       <div className="mt-12 max-w-3xl mx-auto space-y-6">
-        <SectionPlaceholder
-          eyebrow="Your recommended college"
-          title={college.name}
-          subtitle={
-            online_only
-              ? `Summer cap: ${college.summer_cap} units · Fully online`
-              : `${college.region_label} · Summer cap: ${college.summer_cap} units`
-          }
+        <CollegeCard college={college} onlineOnly={online_only} />
+        <CourseSequence track={plan.major_track} />
+        <GradeRoadmap roadmap={plan.grade_roadmap} />
+        <CalGetcChecklist
+          areas={plan.cal_getc_areas}
+          targetKey={target.key}
         />
-        <SectionPlaceholder
-          eyebrow="Your major track"
-          title={plan.major_track.label}
-          subtitle={`${plan.major_track.sequence.length} priority courses, in order`}
-        />
-        <SectionPlaceholder
-          eyebrow="Grade-by-grade roadmap"
-          title={`From ${student.grade}th grade through senior year`}
-          subtitle={`Unit target at graduation: ${plan.unit_target_at_graduation}`}
-        />
-        <SectionPlaceholder
-          eyebrow="The Cal-GETC checklist"
-          title={`${plan.cal_getc_areas.length} areas to clear`}
-          subtitle="The general-ed list that unlocks UC + CSU transfer"
-        />
-        <SectionPlaceholder
-          eyebrow="What you save"
-          title={`Up to ${plan.savings_table[plan.savings_table.length - 1]?.csu ?? "$$$"} at a CSU`}
-          subtitle="Family savings vs. paying full tuition after high school"
-        />
-        <SectionPlaceholder
-          eyebrow="Don't trip on these"
-          title={`${plan.common_mistakes.length} common mistakes`}
-          subtitle="The patterns we see new dual-enrollment families fall into"
-        />
+        <SavingsTable rows={plan.savings_table} targetKey={target.key} />
+        <ActionChecklist plan={plan} />
+        <CommonMistakes mistakes={plan.common_mistakes} />
       </div>
 
-      <footer className="mt-16 max-w-2xl mx-auto text-center text-sm text-[#9CA3AF]">
-        Plan generated {plan.generated_at} · College data from California
-        Community Colleges public sources
+      <div className="mt-12 max-w-2xl mx-auto bg-white rounded-2xl border border-[#E8E4DC] p-6 sm:p-10 text-center">
+        <p className="text-xs uppercase tracking-wider text-[#B68D40] font-medium">
+          {/* TODO: Christopher — final share section eyebrow */}
+          Share your plan
+        </p>
+        <h2 className="mt-2 font-serif text-2xl sm:text-3xl text-[#1B4332] font-semibold">
+          {/* TODO: Christopher — final share CTA copy */}
+          Send this to your counselor.
+        </h2>
+        <p className="mt-2 text-sm text-[#6B7280] max-w-md mx-auto leading-relaxed">
+          {/* TODO: Christopher — final share section body */}
+          The link works for the next 30 days. Anyone with it can see this
+          exact plan — no signup, no tracking.
+        </p>
+        <div className="mt-6">
+          <ShareButton />
+        </div>
+      </div>
+
+      <footer className="mt-12 max-w-2xl mx-auto text-center text-xs text-[#9CA3AF]">
+        Plan generated {plan.generated_at} · California Community Colleges data
+        verified against public dual-enrollment program pages
       </footer>
     </article>
-  );
-}
-
-function SectionPlaceholder({
-  eyebrow,
-  title,
-  subtitle,
-}: {
-  eyebrow: string;
-  title: string;
-  subtitle: string;
-}) {
-  return (
-    <section className="bg-white border border-[#E8E4DC] rounded-2xl p-6 sm:p-8">
-      <p className="text-xs uppercase tracking-wider text-[#B68D40] font-medium">
-        {eyebrow}
-      </p>
-      <h2 className="mt-2 font-serif text-xl sm:text-2xl text-[#1B4332] font-semibold leading-tight">
-        {title}
-      </h2>
-      <p className="mt-2 text-sm text-[#6B7280]">{subtitle}</p>
-    </section>
   );
 }
