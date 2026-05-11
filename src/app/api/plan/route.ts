@@ -1,10 +1,14 @@
 import { NextResponse } from "next/server";
 import { IntakeSchema } from "@/lib/schema";
-import { generateShareId } from "@/lib/nanoid";
+import { generatePlan } from "@/lib/plan-generator";
+import { savePlan } from "@/lib/kv";
 
-// Phase D stub: validates intake and returns a fake shareId so the form
-// can land on /plan/<id>. Phase C will replace this with the real
-// generatePlan + Upstash persistence wiring.
+// POST /api/plan
+//   body  : Intake (Zod-validated)
+//   reply : { shareId } on 200, { error, issues? } on 4xx/5xx
+//
+// Generates a deterministic plan from the intake, persists it to Upstash
+// with a 30-day TTL, and returns the short share ID for /plan/<id>.
 
 export const runtime = "nodejs";
 export const maxDuration = 10;
@@ -14,10 +18,7 @@ export async function POST(req: Request) {
   try {
     body = await req.json();
   } catch {
-    return NextResponse.json(
-      { error: "Invalid JSON body" },
-      { status: 400 },
-    );
+    return NextResponse.json({ error: "Invalid JSON body" }, { status: 400 });
   }
 
   const parsed = IntakeSchema.safeParse(body);
@@ -28,6 +29,15 @@ export async function POST(req: Request) {
     );
   }
 
-  const shareId = generateShareId();
-  return NextResponse.json({ shareId });
+  try {
+    const plan = generatePlan(parsed.data);
+    const shareId = await savePlan(plan);
+    return NextResponse.json({ shareId });
+  } catch (err) {
+    console.error("[/api/plan] failed to generate or save plan", err);
+    return NextResponse.json(
+      { error: "Could not build your plan right now. Please try again." },
+      { status: 500 },
+    );
+  }
 }
