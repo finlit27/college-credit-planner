@@ -36,7 +36,7 @@ export function StepGPA({ value, onChange }: Props) {
           >
             <div className="flex items-baseline justify-between">
               <span className="font-medium">{b.label}</span>
-              <span className="text-sm text-[#9CA3AF] tabular-nums">
+              <span className="text-sm text-[#6B7280] tabular-nums">
                 {b.detail}
               </span>
             </div>

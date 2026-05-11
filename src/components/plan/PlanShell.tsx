@@ -25,7 +25,7 @@ export function PlanShell({ plan }: { plan: Plan }) {
   return (
     <article className="container mx-auto px-4 py-10 sm:py-16">
       <header className="max-w-3xl mx-auto text-center">
-        <p className="text-xs uppercase tracking-wider text-[#B68D40] font-medium">
+        <p className="text-xs uppercase tracking-wider text-[#1B4332] font-semibold">
           College Credit Plan
         </p>
         <h1 className="mt-3 font-serif text-3xl sm:text-5xl text-[#1B4332] font-semibold leading-tight tracking-tight">
@@ -37,7 +37,7 @@ export function PlanShell({ plan }: { plan: Plan }) {
           {online_only ? " · Fully online" : ""}
         </p>
         {student.gpa_status === "alert" ? (
-          <p className="mt-3 inline-block text-sm text-[#B68D40] bg-[#B68D40]/10 border border-[#B68D40]/20 rounded-full px-3 py-1">
+          <p className="mt-3 inline-block text-sm text-[#1B4332] bg-[#B68D40]/15 border border-[#B68D40]/40 rounded-full px-3 py-1">
             {/* TODO: Christopher — final GPA-alert copy */}
             Heads-up: most colleges still accept you with this GPA, but a few
             ask for a 2.0+ — confirm with {college.name} before you apply.
@@ -59,7 +59,7 @@ export function PlanShell({ plan }: { plan: Plan }) {
       </div>
 
       <div className="mt-12 max-w-2xl mx-auto bg-white rounded-2xl border border-[#E8E4DC] p-6 sm:p-10 text-center">
-        <p className="text-xs uppercase tracking-wider text-[#B68D40] font-medium">
+        <p className="text-xs uppercase tracking-wider text-[#1B4332] font-semibold">
           {/* TODO: Christopher — final share section eyebrow */}
           Share your plan
         </p>

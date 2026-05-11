@@ -17,7 +17,7 @@ export function CalGetcChecklist({ areas, targetKey }: Props) {
 
   return (
     <section className="bg-white border border-[#E8E4DC] rounded-2xl p-6 sm:p-8">
-      <p className="text-xs uppercase tracking-wider text-[#B68D40] font-medium">
+      <p className="text-xs uppercase tracking-wider text-[#1B4332] font-semibold">
         The Cal-GETC checklist
       </p>
 
@@ -39,14 +39,14 @@ export function CalGetcChecklist({ areas, targetKey }: Props) {
               aria-hidden
               className="flex-shrink-0 mt-0.5 w-5 h-5 rounded-md border-2 border-[#E8E4DC] bg-white flex items-center justify-center"
             >
-              <Check className="w-3 h-3 text-[#9CA3AF]" />
+              <Check className="w-3 h-3 text-[#6B7280]" aria-hidden="true" />
             </span>
             <div className="flex-1">
               <p className="text-sm">
                 <span className="font-medium text-[#1B4332]">{a.code}</span>{" "}
                 <span className="text-[#4A5568]">— {a.title}</span>
               </p>
-              <p className="mt-0.5 text-xs text-[#9CA3AF]">
+              <p className="mt-0.5 text-xs text-[#6B7280]">
                 e.g. {a.example}
               </p>
             </div>

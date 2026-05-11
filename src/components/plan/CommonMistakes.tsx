@@ -8,7 +8,7 @@ type Props = {
 export function CommonMistakes({ mistakes }: Props) {
   return (
     <section className="bg-white border border-[#E8E4DC] rounded-2xl p-6 sm:p-8">
-      <p className="text-xs uppercase tracking-wider text-[#B68D40] font-medium">
+      <p className="text-xs uppercase tracking-wider text-[#1B4332] font-semibold">
         Don&apos;t trip on these
       </p>
 
@@ -25,7 +25,7 @@ export function CommonMistakes({ mistakes }: Props) {
           <li key={m.number} className="flex items-start gap-4">
             <span
               aria-hidden
-              className="flex-shrink-0 mt-1 w-7 h-7 rounded-full bg-[#B68D40]/10 border border-[#B68D40]/30 text-[#B68D40] flex items-center justify-center font-serif font-semibold text-sm tabular-nums"
+              className="flex-shrink-0 mt-1 w-7 h-7 rounded-full bg-[#B68D40]/15 border border-[#B68D40]/40 text-[#1B4332] flex items-center justify-center font-serif font-semibold text-sm tabular-nums"
             >
               {m.number}
             </span>

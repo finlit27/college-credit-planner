@@ -9,7 +9,7 @@ type Props = {
 export function CollegeCard({ college, onlineOnly }: Props) {
   return (
     <section className="bg-white border border-[#E8E4DC] rounded-2xl p-6 sm:p-8">
-      <p className="text-xs uppercase tracking-wider text-[#B68D40] font-medium">
+      <p className="text-xs uppercase tracking-wider text-[#1B4332] font-semibold">
         Your recommended college
       </p>
 

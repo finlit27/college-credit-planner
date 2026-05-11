@@ -16,7 +16,7 @@ const COLUMN_LABEL: Record<Plan["target"]["key"], string> = {
 export function SavingsTable({ rows, targetKey }: Props) {
   return (
     <section className="bg-white border border-[#E8E4DC] rounded-2xl p-6 sm:p-8">
-      <p className="text-xs uppercase tracking-wider text-[#B68D40] font-medium">
+      <p className="text-xs uppercase tracking-wider text-[#1B4332] font-semibold">
         {COLUMN_LABEL[targetKey] ?? "What you save"}
       </p>
 
@@ -32,7 +32,7 @@ export function SavingsTable({ rows, targetKey }: Props) {
       <div className="mt-6 -mx-2 sm:mx-0 overflow-x-auto">
         <table className="w-full text-sm tabular-nums border-separate border-spacing-0">
           <thead>
-            <tr className="text-xs uppercase tracking-wider text-[#9CA3AF]">
+            <tr className="text-xs uppercase tracking-wider text-[#6B7280]">
               <th scope="col" className="text-left font-medium px-2 py-2">
                 Units
               </th>

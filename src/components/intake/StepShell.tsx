@@ -11,7 +11,13 @@ export function StepShell({ title, subtitle, children }: Props) {
   return (
     <div className="space-y-6">
       <div>
-        <h2 className="font-serif text-2xl sm:text-3xl text-[#1B4332] font-semibold leading-tight">
+        {/* tabIndex={-1} lets IntakeForm focus the heading on step change for
+            screen-reader + keyboard users; outline-none avoids a visible ring
+            since the page change itself is already a visual cue. */}
+        <h2
+          tabIndex={-1}
+          className="font-serif text-2xl sm:text-3xl text-[#1B4332] font-semibold leading-tight focus:outline-none"
+        >
           {title}
         </h2>
         {subtitle ? (

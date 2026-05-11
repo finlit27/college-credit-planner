@@ -43,23 +43,26 @@ export function ShareButton() {
       <button
         type="button"
         onClick={handleCopy}
-        aria-label="Copy share link"
+        aria-label={copied ? "Share link copied to clipboard" : "Copy share link"}
         className="inline-flex items-center gap-2 bg-[#1B4332] hover:bg-[#143526] text-white rounded-full px-6 py-3 text-sm font-medium transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-[#1B4332] focus-visible:ring-offset-2 focus-visible:ring-offset-[#FDFBF7] min-h-[44px]"
       >
         {copied ? (
           <>
-            <Check className="w-4 h-4" aria-hidden />
+            <Check className="w-4 h-4" aria-hidden="true" />
             Link copied
           </>
         ) : (
           <>
-            <Copy className="w-4 h-4" aria-hidden />
+            <Copy className="w-4 h-4" aria-hidden="true" />
             Copy share link
           </>
         )}
       </button>
+      <span role="status" aria-live="polite" className="sr-only">
+        {copied ? "Share link copied to clipboard." : ""}
+      </span>
       {href ? (
-        <p className="text-xs text-[#9CA3AF] break-all max-w-md text-center">
+        <p className="text-xs text-[#6B7280] break-all max-w-md text-center">
           {href}
         </p>
       ) : null}

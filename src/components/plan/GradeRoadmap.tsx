@@ -15,7 +15,7 @@ const GRADE_LABEL: Record<number, string> = {
 export function GradeRoadmap({ roadmap }: Props) {
   return (
     <section className="bg-white border border-[#E8E4DC] rounded-2xl p-6 sm:p-8">
-      <p className="text-xs uppercase tracking-wider text-[#B68D40] font-medium">
+      <p className="text-xs uppercase tracking-wider text-[#1B4332] font-semibold">
         Your grade-by-grade roadmap
       </p>
 
@@ -38,7 +38,7 @@ export function GradeRoadmap({ roadmap }: Props) {
               <div>
                 <h3 className="font-serif text-xl text-[#1B4332] font-semibold leading-tight">
                   {entry.grade}
-                  <sup className="text-sm font-medium text-[#9CA3AF] ml-0.5">
+                  <sup className="text-sm font-medium text-[#6B7280] ml-0.5">
                     {ordinalSuffix(entry.grade)}
                   </sup>{" "}
                   <span className="text-base text-[#6B7280] font-sans font-normal">
@@ -46,7 +46,7 @@ export function GradeRoadmap({ roadmap }: Props) {
                   </span>
                 </h3>
                 {entry.is_current ? (
-                  <span className="mt-1 inline-block text-xs uppercase tracking-wider text-[#B68D40] font-medium">
+                  <span className="mt-1 inline-block text-xs uppercase tracking-wider text-[#1B4332] font-semibold">
                     You are here
                   </span>
                 ) : null}

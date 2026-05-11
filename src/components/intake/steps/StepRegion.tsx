@@ -31,7 +31,7 @@ export function StepRegion({ value, onChange }: Props) {
               <div className="font-medium text-sm sm:text-base">
                 {r.region_label}
               </div>
-              <div className="text-xs sm:text-sm text-[#9CA3AF] mt-1">
+              <div className="text-xs sm:text-sm text-[#6B7280] mt-1">
                 → {r.college}
               </div>
             </div>

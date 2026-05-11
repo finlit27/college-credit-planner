@@ -33,7 +33,7 @@ export function StepGrade({ name, value, onChange }: Props) {
           >
             <div className="text-center">
               <div className="text-2xl font-serif font-semibold">{g.value}</div>
-              <div className="text-xs uppercase tracking-wider text-[#9CA3AF]">
+              <div className="text-xs uppercase tracking-wider text-[#6B7280]">
                 {g.sub}
               </div>
             </div>

@@ -48,7 +48,7 @@ export default async function PreviewPlanPage({ params }: Props) {
   const plan = PlanSchema.parse(JSON.parse(raw));
   return (
     <>
-      <div className="bg-[#B68D40]/10 border-b border-[#B68D40]/20 text-center py-2 text-xs uppercase tracking-wider text-[#B68D40] font-medium">
+      <div className="bg-[#B68D40]/10 border-b border-[#B68D40]/20 text-center py-2 text-xs uppercase tracking-wider text-[#1B4332] font-semibold">
         Dev preview · fixture: {fixture}
       </div>
       <PlanShell plan={plan} />

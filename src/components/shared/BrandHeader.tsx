@@ -11,15 +11,15 @@ export function BrandHeader() {
           className="flex items-center gap-2 hover:opacity-80 transition-opacity"
         >
           <div className="w-10 h-10 rounded-lg bg-[#1B4332] flex items-center justify-center">
-            <Leaf className="w-6 h-6 text-[#B68D40]" />
+            <Leaf className="w-6 h-6 text-[#B68D40]" aria-hidden="true" />
           </div>
           <div>
-            <h1 className="text-xl font-bold text-[#1B4332] font-serif leading-none">
+            <span className="block text-xl font-bold text-[#1B4332] font-serif leading-none">
               FinLit
-            </h1>
-            <p className="text-xs text-[#B68D40] font-medium tracking-wider uppercase">
+            </span>
+            <span className="block text-xs text-[#1B4332] font-semibold tracking-wider uppercase mt-0.5">
               Garden
-            </p>
+            </span>
           </div>
         </a>
         <nav>

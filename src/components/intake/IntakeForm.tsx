@@ -1,6 +1,6 @@
 "use client";
 
-import { useReducer } from "react";
+import { useEffect, useReducer, useRef } from "react";
 import { useRouter } from "next/navigation";
 import { ArrowLeft, ArrowRight, Loader2 } from "lucide-react";
 import {
@@ -22,9 +22,24 @@ import { StepTarget } from "./steps/StepTarget";
 export function IntakeForm() {
   const [state, dispatch] = useReducer(intakeReducer, INITIAL_STATE);
   const router = useRouter();
+  const stepRegionRef = useRef<HTMLDivElement | null>(null);
+  const firstRenderRef = useRef(true);
 
   const valid = isStepValid(state);
   const isLastStep = state.step === TOTAL_STEPS;
+
+  // Move screen-reader + keyboard focus to the new step heading on transition
+  // (skip the very first render so we don't steal autofocus from the Name input).
+  useEffect(() => {
+    if (firstRenderRef.current) {
+      firstRenderRef.current = false;
+      return;
+    }
+    const heading = stepRegionRef.current?.querySelector<HTMLElement>(
+      "h2, [data-step-heading]",
+    );
+    heading?.focus({ preventScroll: false });
+  }, [state.step]);
 
   async function handleSubmit() {
     if (!isComplete(state.draft)) {
@@ -80,7 +95,15 @@ export function IntakeForm() {
         <div className="bg-white rounded-2xl border border-[#E8E4DC] shadow-sm p-6 sm:p-10">
           <ProgressBar step={state.step} total={TOTAL_STEPS} />
 
-          <div className="mt-8">
+          <div
+            className="mt-8"
+            ref={stepRegionRef}
+            role="group"
+            aria-labelledby="intake-step-label"
+          >
+            <span id="intake-step-label" className="sr-only">
+              Step {state.step} of {TOTAL_STEPS}
+            </span>
             {state.step === 1 && (
               <StepName
                 value={state.draft.name}
@@ -159,7 +182,7 @@ export function IntakeForm() {
               className="inline-flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium text-[#4A5568] hover:bg-[#1B4332]/5 disabled:opacity-0 disabled:pointer-events-none transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-[#1B4332]"
               aria-label="Previous step"
             >
-              <ArrowLeft className="w-4 h-4" />
+              <ArrowLeft className="w-4 h-4" aria-hidden="true" />
               Back
             </button>
 
@@ -172,18 +195,21 @@ export function IntakeForm() {
             >
               {state.submitting ? (
                 <>
-                  <Loader2 className="w-4 h-4 animate-spin" />
+                  <Loader2
+                    className="w-4 h-4 animate-spin"
+                    aria-hidden="true"
+                  />
                   Building your plan…
                 </>
               ) : isLastStep ? (
                 <>
                   Build my plan
-                  <ArrowRight className="w-4 h-4" />
+                  <ArrowRight className="w-4 h-4" aria-hidden="true" />
                 </>
               ) : (
                 <>
                   Next
-                  <ArrowRight className="w-4 h-4" />
+                  <ArrowRight className="w-4 h-4" aria-hidden="true" />
                 </>
               )}
             </button>
@@ -198,7 +224,7 @@ function ProgressBar({ step, total }: { step: number; total: number }) {
   const pct = Math.round((step / total) * 100);
   return (
     <div>
-      <div className="flex items-baseline justify-between text-xs uppercase tracking-wider text-[#9CA3AF]">
+      <div className="flex items-baseline justify-between text-xs uppercase tracking-wider text-[#6B7280]">
         <span>
           Step {step} of {total}
         </span>
