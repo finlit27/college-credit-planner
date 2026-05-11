@@ -11,6 +11,7 @@ import {
   isStepValid,
 } from "./types";
 import { IntakeSchema } from "@/lib/schema";
+import { track } from "@/lib/analytics";
 import { StepName } from "./steps/StepName";
 import { StepGrade } from "./steps/StepGrade";
 import { StepGPA } from "./steps/StepGPA";
@@ -56,6 +57,12 @@ export function IntakeForm() {
       return;
     }
     dispatch({ type: "SUBMIT_START" });
+    track("plan_submit_started", {
+      grade: parsed.data.grade,
+      online_only: parsed.data.onlineOnly,
+      major: parsed.data.major,
+      target: parsed.data.target,
+    });
     try {
       const res = await fetch("/api/plan", {
         method: "POST",
@@ -69,8 +76,17 @@ export function IntakeForm() {
       if (!data.shareId) {
         throw new Error("Missing shareId in response");
       }
+      track("plan_created", {
+        grade: parsed.data.grade,
+        online_only: parsed.data.onlineOnly,
+        major: parsed.data.major,
+        target: parsed.data.target,
+      });
       router.push(`/plan/${data.shareId}`);
-    } catch {
+    } catch (err) {
+      track("plan_submit_failed", {
+        reason: err instanceof Error ? err.message.slice(0, 64) : "unknown",
+      });
       // TODO: Christopher — final submit error copy
       dispatch({
         type: "SUBMIT_FAIL",
@@ -85,8 +101,14 @@ export function IntakeForm() {
     if (isLastStep) {
       void handleSubmit();
     } else {
+      track("intake_step_advanced", { from_step: state.step });
       dispatch({ type: "NEXT" });
     }
+  }
+
+  function handleBack() {
+    track("intake_step_reverted", { from_step: state.step });
+    dispatch({ type: "BACK" });
   }
 
   return (
@@ -177,7 +199,7 @@ export function IntakeForm() {
           <div className="mt-8 flex items-center justify-between gap-3">
             <button
               type="button"
-              onClick={() => dispatch({ type: "BACK" })}
+              onClick={handleBack}
               disabled={state.step === 1 || state.submitting}
               className="inline-flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium text-[#4A5568] hover:bg-[#1B4332]/5 disabled:opacity-0 disabled:pointer-events-none transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-[#1B4332]"
               aria-label="Previous step"

@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { Copy, Check } from "lucide-react";
+import { track } from "@/lib/analytics";
 
 /**
  * Copies the current page URL to clipboard. Pure client behavior — no API call.
@@ -32,6 +33,7 @@ export function ShareButton() {
         document.body.removeChild(el);
       }
       setCopied(true);
+      track("plan_shared");
       setTimeout(() => setCopied(false), 2500);
     } catch {
       // Last resort: do nothing — we don't want to crash the page on a copy failure.
