@@ -12,7 +12,7 @@ export function CalGetcChecklist({ areas, targetKey }: Props) {
     targetKey === "uc"
       ? "All seven areas are required for UC transfer."
       : targetKey === "csu" || targetKey === "transfer"
-        ? "Complete all seven if you're chasing an ADT — it doubles as Cal-GETC."
+        ? "Complete all seven if you're chasing an ADT. It doubles as Cal-GETC."
         : "Each area you clear in high school is one less course you pay for later.";
 
   return (
@@ -43,8 +43,8 @@ export function CalGetcChecklist({ areas, targetKey }: Props) {
             </span>
             <div className="flex-1">
               <p className="text-sm">
-                <span className="font-medium text-[#1B4332]">{a.code}</span>{" "}
-                <span className="text-[#4A5568]">— {a.title}</span>
+                <span className="font-medium text-[#1B4332]">{a.code}</span>
+                <span className="text-[#4A5568]">: {a.title}</span>
               </p>
               <p className="mt-0.5 text-xs text-[#6B7280]">
                 e.g. {a.example}

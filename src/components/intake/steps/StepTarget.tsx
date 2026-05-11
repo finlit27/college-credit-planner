@@ -21,7 +21,7 @@ export function StepTarget({ value, onChange }: Props) {
   return (
     <StepShell
       title="What's the dream after high school?"
-      subtitle="Last one. This shapes which credit pathway we recommend — Cal-GETC, an ADT, or a more flexible mix."
+      subtitle="Last one. This shapes which credit pathway we recommend: Cal-GETC, an ADT, or a more flexible mix."
     >
       <div className="space-y-2.5">
         {ORDER.map((key) => {

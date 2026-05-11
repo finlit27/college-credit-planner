@@ -12,7 +12,7 @@ export function StepName({ value, onChange, onEnter }: Props) {
   return (
     <StepShell
       title="What should we call you?"
-      subtitle="First name only. We use this to personalize your plan — we don't store it anywhere it'll get shared."
+      subtitle="First name only. We use this to personalize your plan. We don't store it anywhere it'll get shared."
     >
       <label htmlFor="intake-name" className="sr-only">
         First name

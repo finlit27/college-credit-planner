@@ -7,16 +7,13 @@ export function Hero() {
         </span>
 
         <h1 className="font-serif text-4xl sm:text-5xl md:text-6xl text-[#1B4332] font-semibold leading-tight tracking-tight">
-          Graduate high school with{" "}
-          <span className="text-[#B68D40]">two years of college</span> already
-          paid for.
+          The Strategic Roadmap to{" "}
+          <span className="text-[#B68D40]">Two Years of Free College</span>.
         </h1>
 
         <p className="mt-6 text-lg sm:text-xl text-[#4A5568] leading-relaxed max-w-2xl mx-auto">
-          California funds dual enrollment at every community college in the
-          state. Answer seven quick questions and we&apos;ll build your
-          personalized plan — the same one a CFO would write for their own
-          kid.
+          Don&apos;t just save, strategize. Answer seven questions and get the
+          dual-enrollment roadmap a CFO would write for their own kid.
         </p>
       </div>
     </section>

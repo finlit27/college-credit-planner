@@ -23,7 +23,7 @@ export function StepMajor({ value, onChange }: Props) {
   return (
     <StepShell
       title="What might you study?"
-      subtitle="Don't sweat the choice — pick the closest fit. We use this to recommend courses that transfer cleanly into your major. You can always pivot later."
+      subtitle="Don't sweat the choice. Pick the closest fit. We use this to recommend courses that transfer cleanly into your major. You can always pivot later."
     >
       <div className="space-y-2.5">
         {ORDER.map((key) => {

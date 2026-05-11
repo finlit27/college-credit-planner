@@ -24,7 +24,7 @@ export function StepGPA({ value, onChange }: Props) {
   return (
     <StepShell
       title="What's your GPA looking like?"
-      subtitle="Most California community colleges accept dual enrollment regardless of GPA — this just helps us tailor advice. No judgment."
+      subtitle="Most California community colleges accept dual enrollment regardless of GPA. This just helps us tailor advice. No judgment."
     >
       <div className="space-y-3">
         {GPA_BUCKETS.map((b) => (

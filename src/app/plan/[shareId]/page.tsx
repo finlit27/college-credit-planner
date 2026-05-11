@@ -24,7 +24,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const name = record.plan.student.name;
   return {
     title: `${name}'s College Credit Plan | FinLit Garden`,
-    description: `A free, personalized plan to graduate high school with up to two years of college credit already done — built for ${name}.`,
+    description: `A free, personalized plan to graduate high school with up to two years of college credit already done. Built for ${name}.`,
     openGraph: {
       title: `${name}'s College Credit Plan`,
       description:

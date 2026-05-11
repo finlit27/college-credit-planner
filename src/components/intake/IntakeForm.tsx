@@ -90,7 +90,7 @@ export function IntakeForm() {
       dispatch({
         type: "SUBMIT_FAIL",
         error:
-          "Our server had a hiccup — your answers are still here. Try the button again in a moment.",
+          "Our server had a hiccup. Your answers are still here. Try the button again in a moment.",
       });
     }
   }

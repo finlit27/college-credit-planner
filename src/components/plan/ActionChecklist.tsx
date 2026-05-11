@@ -39,14 +39,14 @@ export function ActionChecklist({ plan }: Props) {
         </>,
         "Check the summer application deadline (most close March–May).",
         "Confirm English 1A is offered this summer (online or in-person).",
-        "Get parent/guardian signature ready — required for every dual-enrollment application.",
+        "Get parent/guardian signature ready. Required for every dual-enrollment application.",
       ],
     },
     {
       title: "Before your first enrollment",
       items: [
         <>
-          Verify your first course on{" "}
+          Verify on{" "}
           <a
             href="https://assist.org"
             target="_blank"
@@ -55,7 +55,7 @@ export function ActionChecklist({ plan }: Props) {
           >
             ASSIST.org
           </a>{" "}
-          — confirm it transfers to UC and/or CSU.
+          that your first course transfers to UC and/or CSU.
         </>,
         <>
           Create a CCCApply account at{" "}

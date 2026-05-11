@@ -38,9 +38,9 @@ export function PlanShell({ plan }: { plan: Plan }) {
         </p>
         {student.gpa_status === "alert" ? (
           <p className="mt-3 inline-block text-sm text-[#1B4332] bg-[#B68D40]/15 border border-[#B68D40]/40 rounded-full px-3 py-1">
-            Quick note: a few California colleges require a 2.0+ for dual
-            enrollment. Most accept any GPA — verify directly with{" "}
-            {college.name} before applying.
+            Quick note. A few California colleges require a 2.0+ for dual
+            enrollment. Most don&apos;t. Verify directly with {college.name}{" "}
+            before applying.
           </p>
         ) : null}
       </header>
@@ -60,14 +60,14 @@ export function PlanShell({ plan }: { plan: Plan }) {
 
       <div className="mt-12 max-w-2xl mx-auto bg-white rounded-2xl border border-[#E8E4DC] p-6 sm:p-10 text-center">
         <p className="text-xs uppercase tracking-wider text-[#1B4332] font-semibold">
-          Share your plan
+          Share This Plan
         </p>
         <h2 className="mt-2 font-serif text-2xl sm:text-3xl text-[#1B4332] font-semibold">
-          Send this to your counselor — and your parents.
+          Send This to Your Counselor and Your Parents.
         </h2>
         <p className="mt-2 text-sm text-[#6B7280] max-w-md mx-auto leading-relaxed">
           This link works for 30 days. Anyone you send it to can see this exact
-          plan — no signup, no tracking, no marketing emails.
+          plan. No signup, no tracking, no marketing emails.
         </p>
         <div className="mt-6">
           <ShareButton />
