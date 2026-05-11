@@ -43,5 +43,5 @@ export default async function PlanPage({ params }: Props) {
   if (!record) {
     notFound();
   }
-  return <PlanShell plan={record.plan} />;
+  return <PlanShell plan={record.plan} shareId={shareId} />;
 }

@@ -22,7 +22,9 @@ export type AnalyticsEvent =
   | "plan_submit_started"
   | "plan_created"
   | "plan_submit_failed"
-  | "plan_shared";
+  | "plan_shared"
+  | "narrative_loaded"
+  | "narrative_failed";
 
 /**
  * Thin wrapper around `track` from @vercel/analytics that never throws.

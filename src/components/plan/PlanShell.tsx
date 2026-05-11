@@ -7,6 +7,19 @@ import { SavingsTable } from "./SavingsTable";
 import { ActionChecklist } from "./ActionChecklist";
 import { CommonMistakes } from "./CommonMistakes";
 import { ShareButton } from "./ShareButton";
+import { NarrativeBlock } from "./NarrativeBlock";
+
+type PlanShellProps = {
+  plan: Plan;
+  /** Used by NarrativeBlock to fetch the personalized note from /api/narrative. */
+  shareId?: string;
+  /**
+   * Pre-rendered narrative text. Skips the fetch when provided. Used by the
+   * dev preview route so you can see the narrative styling without a live
+   * n8n webhook.
+   */
+  initialNarrative?: string;
+};
 
 /**
  * Top-level plan layout. Each child is a pure, single-purpose render
@@ -14,12 +27,10 @@ import { ShareButton } from "./ShareButton";
  *
  * Order mirrors the CLI's markdown narrative so the web plan reads in
  * the same shape as the source-of-truth plan that has been validated
- * with families.
- *
- * NarrativeBlock (E4) + NewsletterOptIn (E6) will slot in once
- * /api/narrative and /api/newsletter exist (Phase C2 / C3).
+ * with families. NewsletterOptIn (E6) slots in once /api/newsletter
+ * exists (Phase C3).
  */
-export function PlanShell({ plan }: { plan: Plan }) {
+export function PlanShell({ plan, shareId, initialNarrative }: PlanShellProps) {
   const { student, target, online_only, college } = plan;
 
   return (
@@ -46,6 +57,7 @@ export function PlanShell({ plan }: { plan: Plan }) {
       </header>
 
       <div className="mt-12 max-w-3xl mx-auto space-y-6">
+        <NarrativeBlock shareId={shareId} initial={initialNarrative} />
         <CollegeCard college={college} onlineOnly={online_only} />
         <CourseSequence track={plan.major_track} />
         <GradeRoadmap roadmap={plan.grade_roadmap} />

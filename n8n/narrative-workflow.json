@@ -1,0 +1,164 @@
+{
+  "name": "College Credit Planner — Narrative (Haiku → Sonnet fallback)",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "cc-planner-narrative",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "id": "webhook",
+      "name": "Webhook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [-1600, 0],
+      "webhookId": "cc-planner-narrative-webhook"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Build the Anthropic Messages API body from the incoming fields.\n// Christopher Jackson's voice rules (no em dashes, period-split clauses,\n// teacher-meets-CFO, no marketing fluff) are baked into the prompt.\nconst input = items[0].json;\n\nconst SYSTEM = `You are writing a 2-sentence personal note to a high-school student about their dual-enrollment plan. The note appears on a free planner tool from FinLit Garden, run by Christopher Jackson. The voice must match Christopher's.\n\nVOICE RULES (strict):\n1. No em dashes. Use periods, commas, or colons.\n2. Two sentences maximum. Short and direct.\n3. Direct address. Use the student's first name once.\n4. Teacher-meets-CFO tone: confident, data-driven, accessible. Lead with insight, not encouragement.\n5. No marketing words like \"amazing\", \"incredible\", \"exciting\".\n6. No financial advice. No promises about admissions outcomes.\n7. Do not start with \"Hi\", \"Hey\", \"Hello\". Start with the student's name or an observation.\n8. Do not invent courses, dates, GPAs, or numbers not provided.\n\nOUTPUT ONLY THE NOTE. No preamble, no quotes, no markdown.`;\n\nconst userMessage = `Write the note for this student:\n\n- Name: ${input.name}\n- Grade: ${input.grade}\n- Region: ${input.region}\n- Major path: ${input.major}\n- Target college destination: ${input.target}\n- Recommended community college: ${input.college}`;\n\nconst makeBody = (model) => ({\n  model,\n  max_tokens: 200,\n  system: SYSTEM,\n  messages: [{ role: 'user', content: userMessage }]\n});\n\nreturn [{\n  json: {\n    haikuBody: makeBody('claude-haiku-4-5-20251001'),\n    sonnetBody: makeBody('claude-sonnet-4-6'),\n  }\n}];"
+      },
+      "id": "prep",
+      "name": "Prep prompt",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [-1380, 0]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.anthropic.com/v1/messages",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "anthropicApi",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            { "name": "anthropic-version", "value": "2023-06-01" },
+            { "name": "content-type", "value": "application/json" }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ $json.haikuBody }}",
+        "options": { "timeout": 8000 }
+      },
+      "id": "haiku-call",
+      "name": "Claude Haiku 4.5",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [-1140, 0],
+      "credentials": {
+        "anthropicApi": { "id": "REPLACE_WITH_YOUR_ANTHROPIC_CRED_ID", "name": "Anthropic API" }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "// Extract the paragraph text and validate length / shape.\n// Validation is loose for narrative: any non-empty string of reasonable\n// length (between 20 and 600 chars) is accepted.\nconst response = items[0].json;\nconst raw = response?.content?.[0]?.text ?? '';\nconst text = String(raw).trim();\n\nconst hasEmDash = text.includes('\\u2014');\nconst lengthOk = text.length >= 20 && text.length <= 600;\nconst ok = lengthOk && !hasEmDash;\n\nif (ok) {\n  return [{ json: { valid: true, paragraph: text } }];\n}\nreturn [{ json: { valid: false, raw, reason: hasEmDash ? 'em_dash' : 'length_or_empty' } }];"
+      },
+      "id": "validate-haiku",
+      "name": "Validate Haiku",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [-900, 0]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": { "caseSensitive": true, "leftValue": "", "typeValidation": "strict" },
+          "conditions": [
+            {
+              "id": "valid-check",
+              "leftValue": "={{ $json.valid }}",
+              "rightValue": true,
+              "operator": { "type": "boolean", "operation": "true", "singleValue": true }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "if-valid",
+      "name": "Haiku valid?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2,
+      "position": [-660, 0]
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{ JSON.stringify({ paragraph: $json.paragraph }) }}",
+        "options": {}
+      },
+      "id": "respond-success",
+      "name": "Respond (success)",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.5,
+      "position": [-420, -120]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.anthropic.com/v1/messages",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "anthropicApi",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            { "name": "anthropic-version", "value": "2023-06-01" },
+            { "name": "content-type", "value": "application/json" }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ $('Prep prompt').item.json.sonnetBody }}",
+        "options": { "timeout": 8000 }
+      },
+      "id": "sonnet-fallback",
+      "name": "Claude Sonnet 4.6 (fallback)",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [-420, 120],
+      "credentials": {
+        "anthropicApi": { "id": "REPLACE_WITH_YOUR_ANTHROPIC_CRED_ID", "name": "Anthropic API" }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "// Same validation as Haiku step. If Sonnet also fails, return null\n// so the API route returns paragraph: null and the client hides the block.\nconst response = items[0].json;\nconst raw = response?.content?.[0]?.text ?? '';\nconst text = String(raw).trim();\nconst hasEmDash = text.includes('\\u2014');\nconst lengthOk = text.length >= 20 && text.length <= 600;\nif (lengthOk && !hasEmDash) {\n  return [{ json: { paragraph: text } }];\n}\nreturn [{ json: { paragraph: null } }];"
+      },
+      "id": "validate-sonnet",
+      "name": "Validate Sonnet",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [-180, 120]
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{ JSON.stringify({ paragraph: $json.paragraph }) }}",
+        "options": {}
+      },
+      "id": "respond-fallback",
+      "name": "Respond (fallback)",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.5,
+      "position": [60, 120]
+    }
+  ],
+  "connections": {
+    "Webhook": { "main": [[{ "node": "Prep prompt", "type": "main", "index": 0 }]] },
+    "Prep prompt": { "main": [[{ "node": "Claude Haiku 4.5", "type": "main", "index": 0 }]] },
+    "Claude Haiku 4.5": { "main": [[{ "node": "Validate Haiku", "type": "main", "index": 0 }]] },
+    "Validate Haiku": { "main": [[{ "node": "Haiku valid?", "type": "main", "index": 0 }]] },
+    "Haiku valid?": {
+      "main": [
+        [{ "node": "Respond (success)", "type": "main", "index": 0 }],
+        [{ "node": "Claude Sonnet 4.6 (fallback)", "type": "main", "index": 0 }]
+      ]
+    },
+    "Claude Sonnet 4.6 (fallback)": { "main": [[{ "node": "Validate Sonnet", "type": "main", "index": 0 }]] },
+    "Validate Sonnet": { "main": [[{ "node": "Respond (fallback)", "type": "main", "index": 0 }]] }
+  },
+  "settings": { "executionOrder": "v1" }
+}

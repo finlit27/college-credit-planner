@@ -46,12 +46,16 @@ export default async function PreviewPlanPage({ params }: Props) {
     notFound();
   }
   const plan = PlanSchema.parse(JSON.parse(raw));
+  // Hard-coded sample narrative so the NarrativeBlock styling is visible in
+  // dev preview without a live n8n webhook. Production /plan/[shareId]
+  // fetches the real narrative from /api/narrative.
+  const sampleNarrative = `${plan.student.name}, the play here is straightforward. ${plan.college.name} has one of the strongest dual-enrollment programs in your area, and starting in ${plan.student.grade}th grade gives you real runway. Stack the right courses early and the credit adds up fast.`;
   return (
     <>
       <div className="bg-[#B68D40]/10 border-b border-[#B68D40]/20 text-center py-2 text-xs uppercase tracking-wider text-[#1B4332] font-semibold">
         Dev preview · fixture: {fixture}
       </div>
-      <PlanShell plan={plan} />
+      <PlanShell plan={plan} initialNarrative={sampleNarrative} />
     </>
   );
 }
