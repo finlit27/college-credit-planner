@@ -1,26 +1,48 @@
+/* Fonts loaded via next/font/google in layout.tsx (--font-inter, --font-playfair) */
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+@theme {
+  --color-finlit-green: #1B4332;
+  --color-finlit-green-hover: #143526;
+  --color-finlit-gold: #B68D40;
+  --color-finlit-gold-hover: #9A7735;
+  --color-finlit-cream: #FDFBF7;
+  --color-finlit-border: #E8E4DC;
+  --color-finlit-body: #4A5568;
+  --color-finlit-muted: #6B7280;
+  --color-finlit-subtle: #9CA3AF;
+
+  --font-sans: var(--font-inter), system-ui, sans-serif;
+  --font-serif: var(--font-playfair), Georgia, serif;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
+@layer base {
+  body {
+    font-family: var(--font-inter), system-ui, sans-serif;
+  }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    font-family: var(--font-playfair), Georgia, serif;
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+/* Tabular figures for money + tables */
+.tabular-nums {
+  font-variant-numeric: tabular-nums;
+}
+
+/* Respect users who don't want motion */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
 }
