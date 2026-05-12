@@ -8,6 +8,7 @@ import { ActionChecklist } from "./ActionChecklist";
 import { CommonMistakes } from "./CommonMistakes";
 import { ShareButton } from "./ShareButton";
 import { NarrativeBlock } from "./NarrativeBlock";
+import { WhatYouSkip } from "./WhatYouSkip";
 
 type PlanShellProps = {
   plan: Plan;
@@ -60,6 +61,10 @@ export function PlanShell({ plan, shareId, initialNarrative }: PlanShellProps) {
         <NarrativeBlock shareId={shareId} initial={initialNarrative} />
         <CollegeCard college={college} onlineOnly={online_only} />
         <CourseSequence track={plan.major_track} />
+        <WhatYouSkip
+          target={plan.target}
+          unitTarget={plan.unit_target_at_graduation}
+        />
         <GradeRoadmap roadmap={plan.grade_roadmap} />
         <CalGetcChecklist
           areas={plan.cal_getc_areas}
