@@ -9,6 +9,7 @@ import { CommonMistakes } from "./CommonMistakes";
 import { ShareButton } from "./ShareButton";
 import { NarrativeBlock } from "./NarrativeBlock";
 import { WhatYouSkip } from "./WhatYouSkip";
+import { NewsletterOptIn } from "./NewsletterOptIn";
 
 type PlanShellProps = {
   plan: Plan;
@@ -28,8 +29,7 @@ type PlanShellProps = {
  *
  * Order mirrors the CLI's markdown narrative so the web plan reads in
  * the same shape as the source-of-truth plan that has been validated
- * with families. NewsletterOptIn (E6) slots in once /api/newsletter
- * exists (Phase C3).
+ * with families. NewsletterOptIn renders after SavingsTable (Phase C3, shipped).
  */
 export function PlanShell({ plan, shareId, initialNarrative }: PlanShellProps) {
   const { student, target, online_only, college } = plan;
@@ -71,6 +71,7 @@ export function PlanShell({ plan, shareId, initialNarrative }: PlanShellProps) {
           targetKey={target.key}
         />
         <SavingsTable rows={plan.savings_table} targetKey={target.key} />
+        <NewsletterOptIn studentName={student.name} />
         <ActionChecklist plan={plan} />
         <CommonMistakes mistakes={plan.common_mistakes} />
       </div>
