@@ -15,7 +15,7 @@ Built for [FinLit Garden](https://finlitgarden.com). Source-of-truth for the und
 - **@vercel/analytics** for funnel events
 - **Vitest** for unit + integration tests
 - Optional: **n8n Cloud** workflow calling **Claude Haiku 4.5** for the personalized narrative paragraph (Phase B — not yet wired)
-- Optional: **Kit** newsletter (Phase C3 — not yet wired)
+- Optional: **Kit** newsletter (Phase C3 — wired: `/api/newsletter`)
 
 ---
 
@@ -56,7 +56,7 @@ All set via `.env.local` for dev and via the Vercel dashboard for preview + prod
 | `KV_REST_API_TOKEN` | Upstash REST token | same |
 | `N8N_NARRATIVE_WEBHOOK` | n8n Cloud webhook for the personalized narrative | Phase C2 (`/api/narrative`) |
 | `KIT_API_KEY` | Kit API v3 key | Phase C3 (`/api/newsletter`) |
-| `KIT_FORM_ID` | Kit form/tag ID — should map to tag `cc-planner` | Phase C3 |
+| `KIT_FORM_ID` | Kit form ID — maps to Kit segment `transfer-blueprint` | Phase C3 |
 
 If you've linked this directory to a Vercel project (`vercel link`), `vercel env pull .env.local` will fill in everything that's already in the dashboard.
 
