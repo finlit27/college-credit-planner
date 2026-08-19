@@ -4,8 +4,11 @@ import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
 const setMock = vi.fn(async () => "OK");
 const getMock = vi.fn();
 vi.mock("@upstash/redis", () => ({
-  Redis: {
-    fromEnv: () => ({ set: setMock, get: getMock }),
+  // kv.ts constructs the client with explicitly resolved credentials rather
+  // than Redis.fromEnv(), so the mock has to be constructible.
+  Redis: class {
+    set = setMock;
+    get = getMock;
   },
 }));
 
@@ -40,6 +43,8 @@ describe("GET /api/narrative", () => {
     setMock.mockClear();
     getMock.mockClear();
     process.env.N8N_NARRATIVE_WEBHOOK = "https://n8n.example/cc-narrative";
+    process.env.UPSTASH_REDIS_REST_URL = "https://test.upstash.io";
+    process.env.UPSTASH_REDIS_REST_TOKEN = "test-token";
   });
 
   afterEach(() => {
