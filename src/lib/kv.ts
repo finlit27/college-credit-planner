@@ -1,6 +1,7 @@
 import { Redis } from "@upstash/redis";
 import type { Plan, ShareRecord } from "@/lib/schema";
 import { generateShareId } from "@/lib/nanoid";
+import { resolveRedisCredentials } from "@/lib/redis-env";
 
 const THIRTY_DAYS_SECONDS = 60 * 60 * 24 * 30;
 const PLAN_KEY_PREFIX = "cc-plan:";
@@ -8,9 +9,12 @@ const PLAN_KEY_PREFIX = "cc-plan:";
 let _client: Redis | null = null;
 function client(): Redis {
   if (_client) return _client;
-  // Upstash Vercel integration auto-sets KV_REST_API_URL + KV_REST_API_TOKEN
-  // (or UPSTASH_REDIS_REST_URL + UPSTASH_REDIS_REST_TOKEN).
-  _client = Redis.fromEnv();
+  // Not Redis.fromEnv(): it reads only two fixed variable names, and the
+  // Vercel Upstash integration generates neither when given a custom prefix.
+  // See src/lib/redis-env.ts for the resolution order and the outage it fixes.
+  const { url, token, source } = resolveRedisCredentials();
+  console.log(`[kv] Upstash credentials resolved from ${source}`);
+  _client = new Redis({ url, token });
   return _client;
 }
 
