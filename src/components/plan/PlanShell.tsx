@@ -9,6 +9,7 @@ import { CommonMistakes } from "./CommonMistakes";
 import { ShareButton } from "./ShareButton";
 import { NarrativeBlock } from "./NarrativeBlock";
 import { WhatYouSkip } from "./WhatYouSkip";
+import { AssociateDegreeRoutes } from "./AssociateDegreeRoutes";
 import { NewsletterOptIn } from "./NewsletterOptIn";
 
 type PlanShellProps = {
@@ -75,6 +76,10 @@ export function PlanShell({ plan, shareId, initialNarrative }: PlanShellProps) {
           targetKey={target.key}
         />
         <SavingsTable rows={plan.savings_table} targetKey={target.key} />
+        <AssociateDegreeRoutes
+          collegeName={college.name}
+          targetKey={target.key}
+        />
         <NewsletterOptIn studentName={student.name} />
         <ActionChecklist plan={plan} />
         <CommonMistakes mistakes={plan.common_mistakes} />
