@@ -10,12 +10,24 @@
  * Like course-gates.ts, this is a RENDER-TIME layer. It stays out of the
  * Python CLI and the parity fixtures so the Plan payload is unchanged.
  *
+ * HOW THESE THREE WERE CHOSEN
+ * All 23 of El Camino's ADTs were checked against two filters: does the
+ * required core contain a prerequisite a 9th or 10th grader cannot clear,
+ * and do the courses actually run. Twelve have a fully open core. These
+ * three combine an open core, a low unit count, and the healthiest section
+ * counts in the live schedule.
+ *
+ * Psychology and Sociology were deliberately dropped. Both bury a statistics
+ * course in the REQUIRED core with no alternative, and Psychology's core is
+ * a three-term chain (PSYC C1000, then statistics, then PSYC 109B). They are
+ * fine degrees and poor dual-enrollment targets.
+ *
  * SCOPE
  * El Camino College only. Every course code, unit count and list below was
- * read from El Camino's 2026-2027 catalog on the verifiedOn date. Do not
- * extend this to another college by analogy: ADT major requirements come
- * from a statewide Transfer Model Curriculum, but each college maps its own
- * course numbers onto it, and those differ.
+ * read from El Camino's 2026-2027 catalog, and every section count from the
+ * live class schedule, on the verifiedOn date. Do not extend this to another
+ * college by analogy: ADT major requirements come from a statewide Transfer
+ * Model Curriculum, but each college maps its own course numbers onto it.
  */
 
 /** The four things every ADT requires, independent of major. */
@@ -52,11 +64,23 @@ export interface AdtCourse {
 
 export interface AdtGroup {
   label: string;
+  /** Display string, verbatim from the catalog. */
   units: string;
+  /** Numeric floor of `units`, used to compute how much is reachable now. */
+  unitsMin: number;
   /** true when every listed course is required, false when the student chooses. */
   takeAll: boolean;
   note?: string;
   courses: AdtCourse[];
+}
+
+/** Section counts read from the live class schedule, per subject prefix. */
+export interface AdtAvailability {
+  subjects: string[];
+  fall: number;
+  spring: number;
+  winter: number;
+  note?: string;
 }
 
 export interface AdtRoute {
@@ -74,6 +98,7 @@ export interface AdtRoute {
    * core courses are prerequisites for other core courses.
    */
   minCoreTerms: number;
+  availability: AdtAvailability;
   groups: AdtGroup[];
 }
 
@@ -82,6 +107,7 @@ export interface CollegeAdtRoutes {
   collegeName: string;
   verifiedOn: string;
   sourceUrl: string;
+  scheduleUrl: string;
   routes: AdtRoute[];
 }
 
@@ -99,9 +125,129 @@ const STATS_OPTIONS: AdtCourse = {
 const EL_CAMINO_ROUTES: CollegeAdtRoutes = {
   collegeId: "el_camino",
   collegeName: "El Camino College",
-  verifiedOn: "2026-08-19",
+  verifiedOn: "2026-08-20",
   sourceUrl: "http://catalog.elcamino.edu/content.php?catoid=12&navoid=686",
+  scheduleUrl: "https://selfservice.elcamino.edu/student/Courses/Search",
   routes: [
+    {
+      id: "administration-of-justice-as-t",
+      name: "Administration of Justice AS-T",
+      totalMajorUnits: "18-19 units",
+      summary:
+        "Criminal law, investigation, corrections and forensics. Transfers to a CSU criminal justice or criminology major.",
+      dualEnrollmentFit:
+        "The strongest dual-enrollment target at this college. All 18 units can be completed without clearing a single prerequisite, and Administration of Justice runs more sections than any other subject checked, so seats are the least likely to be a problem. AJ 100 is already on El Camino's own Grades 9-10 recommended list.",
+      watchOut:
+        "List B looks like it forces statistics, but it does not. Choosing SOCI 101 and PSYC C1000 fills the whole 6 units with prerequisite-free courses. Separately, AJ 49, AJ 150 and AJ 155 carry enrollment limits that exclude minors. None of them appear below, so avoid wandering into them when picking electives.",
+      minCoreTerms: 1,
+      availability: { subjects: ["AJ"], fall: 23, spring: 22, winter: 5 },
+      groups: [
+        {
+          label: "Required Core",
+          units: "6 units",
+          unitsMin: 6,
+          takeAll: true,
+          courses: [
+            { code: "AJ 100", title: "Introduction to Administration of Justice", units: 3, calGetcArea: "Area 4", access: "open" },
+            { code: "AJ 103", title: "Concepts of Criminal Law", units: 3, access: "open" },
+          ],
+        },
+        {
+          label: "List A",
+          units: "6 units",
+          unitsMin: 6,
+          takeAll: false,
+          note: "Choose two. Every option is prerequisite-free.",
+          courses: [
+            { code: "AJ 132", title: "Forensic Crime Scene Investigation", units: 3, access: "open" },
+            { code: "AJ 111", title: "Criminal Investigation", units: 3, access: "open" },
+            { code: "AJ 107", title: "Crime and Control: An Introduction to Corrections", units: 3, access: "open" },
+            { code: "AJ 115", title: "Community and the Justice System", units: 3, access: "open" },
+            { code: "AJ 126", title: "Juvenile Delinquency and Legal Procedures", units: 3, access: "open" },
+            { code: "AJ 130", title: "Criminal Procedures", units: 3, access: "open" },
+            { code: "AJ 131", title: "Legal Aspects of Evidence", units: 3, access: "open" },
+          ],
+        },
+        {
+          label: "List B",
+          units: "6-7 units",
+          unitsMin: 6,
+          takeAll: false,
+          note: "Choose two of the three. SOCI 101 plus PSYC C1000 avoids statistics entirely, and both run in winter.",
+          courses: [
+            { code: "SOCI 101", title: "Introduction to Sociology", units: 3, orAlso: ["SOCI 101H"], calGetcArea: "Area 4", access: "open" },
+            { code: "PSYC C1000", title: "Introduction to Psychology", units: 3, orAlso: ["PSYC C1000H"], calGetcArea: "Area 4", access: "open" },
+            STATS_OPTIONS,
+          ],
+        },
+      ],
+    },
+    {
+      id: "history-aa-t",
+      name: "History AA-T",
+      totalMajorUnits: "18-19 units",
+      summary:
+        "United States and world history, with a breadth requirement in culture and social science. Transfers to a CSU history major.",
+      dualEnrollmentFit:
+        "Eighteen units with no prerequisite anywhere in the core or List A, and the two List A courses, HIST 140 and HIST 141, sit on El Camino's Grades 9-10 recommended list. All four of those courses run in Winter 2027.",
+      watchOut:
+        "The literature options inside List B, the ENGL 28 through ENGL 43 group, sit behind ENGL C1000 and are therefore senior-year courses. The art history and world language options in the same group are not, so route around the English ones.",
+      minCoreTerms: 1,
+      availability: { subjects: ["HIST"], fall: 13, spring: 12, winter: 5 },
+      groups: [
+        {
+          label: "Required Core",
+          units: "6 units",
+          unitsMin: 6,
+          takeAll: true,
+          note: "Both also satisfy half of the CSU American Institutions graduation requirement, which sits outside Cal-GETC and is allowed to double-count.",
+          courses: [
+            { code: "HIST C1001", title: "United States History to 1877 (formerly HIST 101)", units: 3, orAlso: ["HIST C1001H"], calGetcArea: "Area 3B or 4", access: "open" },
+            { code: "HIST C1002", title: "United States History since 1877 (formerly HIST 102)", units: 3, orAlso: ["HIST C1002H"], calGetcArea: "Area 3B or 4", access: "open" },
+          ],
+        },
+        {
+          label: "List A",
+          units: "6 units",
+          unitsMin: 6,
+          takeAll: true,
+          note: "Both are on El Camino's Grades 9-10 list and both run in Winter 2027.",
+          courses: [
+            { code: "HIST 140", title: "History of Early Civilizations", units: 3, calGetcArea: "Area 3B or 4", access: "open" },
+            { code: "HIST 141", title: "History of Modern Civilizations", units: 3, calGetcArea: "Area 3B or 4", access: "open" },
+          ],
+        },
+        {
+          label: "List B, culture group",
+          units: "3 units",
+          unitsMin: 3,
+          takeAll: false,
+          note: "Choose one. The catalog lists more options, including literature courses that require ENGL C1000. These are the prerequisite-free ones.",
+          courses: [
+            { code: "AHIS 207", title: "Art History of Mexico, Central and South America", units: 3, calGetcArea: "Area 3A", access: "open" },
+            { code: "AHIS 209", title: "History of African Art", units: 3, calGetcArea: "Area 3A", access: "open" },
+            { code: "SPAN 1", title: "Elementary Spanish I", units: 5, orAlso: ["SPAN 1H"], access: "open", prereq: "None, but comparable to two years of high school Spanish." },
+            { code: "ASL 111", title: "American Sign Language I", units: 4, access: "open" },
+            { code: "ENGL 31", title: "Mythology and Folklore", units: 3, calGetcArea: "Area 3B", access: "english-gated", prereq: "ENGL C1000." },
+          ],
+        },
+        {
+          label: "List B, social science group",
+          units: "3 units",
+          unitsMin: 3,
+          takeAll: false,
+          note: "Choose one. The catalog list is much longer. These are prerequisite-free and each clears a Cal-GETC area.",
+          courses: [
+            { code: "ESTU 1", title: "Introduction to Ethnic Studies", units: 3, calGetcArea: "Area 6 or 4", access: "open" },
+            { code: "ANTH 2", title: "Introduction to Cultural Anthropology", units: 3, orAlso: ["ANTH 2H"], calGetcArea: "Area 4", access: "open" },
+            { code: "POLS C1000", title: "American Government and Politics", units: 3, orAlso: ["POLS C1000H"], calGetcArea: "Area 4", access: "open" },
+            { code: "GEOG 2", title: "Cultural Geography", units: 3, calGetcArea: "Area 4", access: "open" },
+            { code: "SOCI 112", title: "Introduction to Criminology", units: 3, calGetcArea: "Area 4", access: "open" },
+            { code: "ECON 100", title: "Fundamentals of Economics", units: 3, calGetcArea: "Area 4", access: "open" },
+          ],
+        },
+      ],
+    },
     {
       id: "anthropology-aa-t",
       name: "Anthropology AA-T",
@@ -109,14 +255,22 @@ const EL_CAMINO_ROUTES: CollegeAdtRoutes = {
       summary:
         "Biological anthropology, cultural anthropology and archaeology. Transfers to a CSU anthropology major.",
       dualEnrollmentFit:
-        "The most completable of the three. All three required core courses are prerequisite-free, so a 9th or 10th grader can start immediately and take them in any order. It is also the only one of the three whose lists offer a path around statistics, since ANTH 4 satisfies List A on its own.",
+        "All three required core courses are prerequisite-free, so a 9th or 10th grader can start immediately and take them in any order. ANTH 4 satisfies List A on its own, which is the route around statistics.",
       watchOut:
-        "List B does not accept another anthropology course. It forces a science or a statistics course, so the math question comes back at the end even if List A avoided it.",
+        "ANTH 3 is core but does not run in the winter session, only fall and spring, so it cannot be the winter pick. List B also refuses another anthropology course and forces a science or a statistics course.",
       minCoreTerms: 1,
+      availability: {
+        subjects: ["ANTH"],
+        fall: 11,
+        spring: 12,
+        winter: 4,
+        note: "ANTH 1 and ANTH 2 run in winter. ANTH 3 and the ANTH 5 lab are fall and spring only.",
+      },
       groups: [
         {
           label: "Required Core",
           units: "9 units",
+          unitsMin: 9,
           takeAll: true,
           courses: [
             { code: "ANTH 1", title: "Introduction to Biological Anthropology", units: 3, orAlso: ["ANTH 1H"], calGetcArea: "Area 5B", access: "open" },
@@ -127,6 +281,7 @@ const EL_CAMINO_ROUTES: CollegeAdtRoutes = {
         {
           label: "List A",
           units: "3-4 units",
+          unitsMin: 3,
           takeAll: false,
           note: "Choose one. ANTH 4 is the route that avoids statistics.",
           courses: [
@@ -137,6 +292,7 @@ const EL_CAMINO_ROUTES: CollegeAdtRoutes = {
         {
           label: "List B",
           units: "3-4 units",
+          unitsMin: 3,
           takeAll: false,
           note: "Choose one, plus any List A course not already used.",
           courses: [
@@ -149,6 +305,7 @@ const EL_CAMINO_ROUTES: CollegeAdtRoutes = {
         {
           label: "List C",
           units: "3-4 units",
+          unitsMin: 3,
           takeAll: false,
           note: "Choose one, plus any List A or List B course not already used. Every option here is prerequisite-free.",
           courses: [
@@ -164,113 +321,6 @@ const EL_CAMINO_ROUTES: CollegeAdtRoutes = {
             { code: "SOCI 101", title: "Introduction to Sociology", units: 3, orAlso: ["SOCI 101H"], calGetcArea: "Area 4", access: "open" },
             { code: "SOCI 107", title: "Issues of Race and Ethnicity in the United States", units: 3, calGetcArea: "Area 4", access: "open" },
             { code: "SOCI 108", title: "Global Perspectives on Race and Ethnicity", units: 3, calGetcArea: "Area 4", access: "open" },
-          ],
-        },
-      ],
-    },
-    {
-      id: "sociology-aa-t",
-      name: "Sociology AA-T",
-      totalMajorUnits: "19 units",
-      summary:
-        "Sociological theory, social problems and research methods. Transfers to a CSU sociology major and feeds social work and criminology.",
-      dualEnrollmentFit:
-        "Two of the three core courses are prerequisite-free, and every List A and List B option is a 3-unit lecture with no prerequisite. Most of the 19 units are reachable in 9th and 10th grade.",
-      watchOut:
-        "Statistics is required in the core with no alternative. Algebra 2 has to be finished with a C first, and if the SOCI 109A version is chosen it also requires SOCI 101 beforehand.",
-      minCoreTerms: 2,
-      groups: [
-        {
-          label: "Required Core",
-          units: "10 units",
-          takeAll: true,
-          courses: [
-            { code: "SOCI 101", title: "Introduction to Sociology", units: 3, orAlso: ["SOCI 101H"], calGetcArea: "Area 4", access: "open" },
-            { code: "SOCI 104", title: "Social Problems", units: 3, calGetcArea: "Area 4", access: "open" },
-            STATS_OPTIONS,
-          ],
-        },
-        {
-          label: "List A",
-          units: "6 units",
-          takeAll: false,
-          note: "Choose two. All four are prerequisite-free.",
-          courses: [
-            { code: "SOCI 102", title: "Families and Intimate Relationships", units: 3, calGetcArea: "Area 4", access: "open" },
-            { code: "SOCI 107", title: "Issues of Race and Ethnicity in the United States", units: 3, calGetcArea: "Area 4", access: "open" },
-            { code: "SOCI 112", title: "Introduction to Criminology", units: 3, calGetcArea: "Area 4", access: "open" },
-            { code: "PSYC 108", title: "Social Psychology", units: 3, calGetcArea: "Area 4", access: "open" },
-          ],
-        },
-        {
-          label: "List B",
-          units: "3 units",
-          takeAll: false,
-          note: "Choose one.",
-          courses: [
-            { code: "ANTH 2", title: "Introduction to Cultural Anthropology", units: 3, orAlso: ["ANTH 2H"], calGetcArea: "Area 4", access: "open" },
-            { code: "ASTU 7", title: "History of American Popular Culture", units: 3, calGetcArea: "Area 3B or 4", access: "open" },
-            { code: "PSYC 112", title: "Human Sexuality", units: 3, access: "open" },
-            { code: "PSYC 116", title: "Lifespan Development", units: 3, access: "open" },
-            { code: "SOCI 108", title: "Global Perspectives on Race and Ethnicity", units: 3, calGetcArea: "Area 4", access: "open" },
-            { code: "SOCI 110", title: "Introduction to Social Work", units: 3, access: "open" },
-            { code: "SOCI 113", title: "Gender and Society", units: 3, calGetcArea: "Area 4", access: "open" },
-            { code: "SOCI 115", title: "Sociology of Death and Dying", units: 3, calGetcArea: "Area 4", access: "open" },
-            { code: "SOCI 118", title: "Sociology of Sexualities", units: 3, calGetcArea: "Area 4", access: "open" },
-            { code: "WSTU 1", title: "Introduction to Women's Studies", units: 3, calGetcArea: "Area 4", access: "open" },
-          ],
-        },
-      ],
-    },
-    {
-      id: "psychology-aa-t",
-      name: "Psychology AA-T",
-      totalMajorUnits: "20-21 units",
-      summary:
-        "The science of psychology, statistics and research design. Transfers to a CSU psychology major.",
-      dualEnrollmentFit:
-        "The broadest major of the three and the most commonly declared, but the hardest to finish in high school. The core is a three-link chain: PSYC C1000, then a statistics course, then PSYC 109B, which cannot be compressed because each is a prerequisite for the next.",
-      watchOut:
-        "PSYC 103 looks attractive because it satisfies Cal-GETC Area 1B, but it is the one List B course with a hard ENGL C1000 prerequisite, so it is a senior-year course. PHIL 105 fills Area 1B without that prerequisite.",
-      minCoreTerms: 3,
-      groups: [
-        {
-          label: "Required Core",
-          units: "11 units",
-          takeAll: true,
-          note: "These three must be taken in order. Each one gates the next.",
-          courses: [
-            { code: "PSYC C1000", title: "Introduction to Psychology", units: 3, orAlso: ["PSYC C1000H"], calGetcArea: "Area 4", access: "open" },
-            STATS_OPTIONS,
-            { code: "PSYC 109B", title: "Research Methods in the Behavioral Sciences", units: 4, access: "sequenced", prereq: "PSYC C1000 or SOCI 101, and a statistics course, each with a C or better." },
-          ],
-        },
-        {
-          label: "List A",
-          units: "3-4 units",
-          takeAll: false,
-          note: "Choose one.",
-          courses: [
-            { code: "BIOL 10", title: "Fundamentals of Biology", units: 4, orAlso: ["BIOL 10H"], calGetcArea: "Area 5B", access: "open" },
-            { code: "PSYC 107", title: "Physiological Psychology", units: 3, calGetcArea: "Area 5B", access: "open" },
-          ],
-        },
-        {
-          label: "List B",
-          units: "6 units",
-          takeAll: false,
-          note: "Choose two, plus any List A course not already used.",
-          courses: [
-            { code: "PSYC 102", title: "Psychology for Effective Living", units: 3, access: "open" },
-            { code: "PSYC 103", title: "Critical Thinking and Psychology", units: 3, orAlso: ["PSYC 103H"], calGetcArea: "Area 1B", access: "english-gated", prereq: "ENGL C1000 with a C or better." },
-            { code: "PSYC 108", title: "Social Psychology", units: 3, calGetcArea: "Area 4", access: "open" },
-            { code: "PSYC 110", title: "African American Psychology", units: 3, access: "open" },
-            { code: "PSYC 112", title: "Human Sexuality", units: 3, access: "open" },
-            { code: "PSYC 115", title: "Abnormal Psychology", units: 3, access: "open" },
-            { code: "PSYC 116", title: "Lifespan Development", units: 3, access: "open" },
-            { code: "PSYC 117", title: "Cultural Psychology", units: 3, access: "open" },
-            { code: "PSYC 119", title: "LGBTQ+ Psychology", units: 3, access: "open" },
-            { code: "PSYC 125", title: "The Psychology of Gender", units: 3, access: "open" },
           ],
         },
       ],
@@ -293,21 +343,34 @@ export function routeCourses(route: AdtRoute): AdtCourse[] {
 }
 
 /**
- * How many units of a route are registerable with no prerequisite at all.
- * This is the honest "can a 9th grader start this today" number.
+ * How many units of a route a student with no college coursework and no
+ * cleared prerequisites could complete today.
+ *
+ * For a take-all group, only the open courses count. For a choose-from group,
+ * the group is credited up to its unit floor if the open options can cover it,
+ * since the student is free to pick those and ignore the gated ones.
  */
 export function openUnits(route: AdtRoute): number {
   return route.groups.reduce((sum, g) => {
-    const open = g.courses.filter((c) => c.access === "open");
-    if (g.takeAll) return sum + open.reduce((s, c) => s + c.units, 0);
-    // For choose-from groups, credit the single largest open option only.
-    return sum + (open.length ? Math.max(...open.map((c) => c.units)) : 0);
+    const openTotal = g.courses
+      .filter((c) => c.access === "open")
+      .reduce((s, c) => s + c.units, 0);
+    if (g.takeAll) return sum + openTotal;
+    return sum + Math.min(g.unitsMin, openTotal);
   }, 0);
 }
 
-/** Routes ordered by how much of the major a high schooler can start immediately. */
+/**
+ * Routes ordered by how startable they are: fewest sequential terms first,
+ * then most units reachable with no prerequisite, then the healthiest section
+ * count in the live schedule, since a degree you cannot get a seat in is not
+ * actually available.
+ */
 export function routesByAccessibility(routes: AdtRoute[]): AdtRoute[] {
   return [...routes].sort(
-    (a, b) => a.minCoreTerms - b.minCoreTerms || openUnits(b) - openUnits(a),
+    (a, b) =>
+      a.minCoreTerms - b.minCoreTerms ||
+      openUnits(b) - openUnits(a) ||
+      b.availability.fall - a.availability.fall,
   );
 }

@@ -98,7 +98,8 @@ export function AssociateDegreeRoutes({ collegeName, targetKey }: Props) {
       </div>
 
       <p className="mt-6 text-xs text-[#9CA3AF] leading-relaxed">
-        Requirements read from the {collegeName} catalog on {data.verifiedOn}.
+        Requirements read from the {collegeName} catalog, and section counts
+        from its live class schedule, on {data.verifiedOn}.
         Degree requirements change between catalog years, and the catalog year
         you enter under is the one that binds. Confirm with a counselor before
         committing to a route.
@@ -148,6 +149,22 @@ function RouteCard({ route, rank }: { route: AdtRoute; rank: number }) {
         </span>{" "}
         {route.minCoreTerms === 1 ? "term" : "terms"} at minimum.
       </p>
+
+      <p className="mt-2 flex flex-wrap items-baseline gap-x-3 gap-y-1 text-xs text-[#6B7280]">
+        <span className="font-medium text-[#1B4332]">
+          Sections offered ({route.availability.subjects.join(", ")}):
+        </span>
+        <span className="tabular-nums">Fall {route.availability.fall}</span>
+        <span className="tabular-nums">Spring {route.availability.spring}</span>
+        <span className="tabular-nums">
+          Winter {route.availability.winter}
+        </span>
+      </p>
+      {route.availability.note ? (
+        <p className="mt-1 text-xs text-[#6B7280] leading-relaxed">
+          {route.availability.note}
+        </p>
+      ) : null}
 
       <div className="mt-4 space-y-4">
         {route.groups.map((group) => (

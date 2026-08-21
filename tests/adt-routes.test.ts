@@ -20,10 +20,11 @@ describe("adt-routes — scope and provenance", () => {
     }
   });
 
-  it("carries a verification date and a catalog source", () => {
+  it("carries a verification date, a catalog source and a schedule source", () => {
     const r = getAdtRoutes(EL_CAMINO)!;
     expect(r.verifiedOn).toMatch(/^\d{4}-\d{2}-\d{2}$/);
     expect(r.sourceUrl).toMatch(/^https?:\/\//);
+    expect(r.scheduleUrl).toMatch(/^https?:\/\//);
   });
 
   it("states the four ADT-wide requirements", () => {
@@ -32,12 +33,23 @@ describe("adt-routes — scope and provenance", () => {
     expect(ADT_REQUIREMENTS.join(" ")).toMatch(/Cal-GETC/);
   });
 
-  it("offers exactly the three social-science routes", () => {
+  it("offers the three routes with fully open cores", () => {
     expect(routes().map((r) => r.id).sort()).toEqual([
+      "administration-of-justice-as-t",
       "anthropology-aa-t",
-      "psychology-aa-t",
-      "sociology-aa-t",
+      "history-aa-t",
     ]);
+  });
+
+  it("no longer offers the statistics-gated routes", () => {
+    /**
+     * Psychology and Sociology were dropped deliberately: both put a statistics
+     * course in the REQUIRED core with no alternative, and Psychology's core is
+     * a three-term prerequisite chain. Neither is a good dual-enrollment target.
+     */
+    const ids = routes().map((r) => r.id);
+    expect(ids).not.toContain("psychology-aa-t");
+    expect(ids).not.toContain("sociology-aa-t");
   });
 });
 
@@ -52,7 +64,7 @@ describe("adt-routes — data integrity", () => {
     }
   });
 
-  it("every route states its total major units and a watch-out", () => {
+  it("every route states units, fit and a watch-out", () => {
     for (const route of routes()) {
       expect(route.totalMajorUnits).toMatch(/units$/);
       expect(route.watchOut.length).toBeGreaterThan(20);
@@ -60,20 +72,13 @@ describe("adt-routes — data integrity", () => {
     }
   });
 
-  it("required-core groups are takeAll, list groups are choose-from", () => {
+  it("unitsMin agrees with the displayed unit string", () => {
     for (const route of routes()) {
-      const core = route.groups.find((g) => g.label === "Required Core")!;
-      expect(core.takeAll).toBe(true);
-      for (const g of route.groups.filter((g) => g.label !== "Required Core")) {
-        expect(g.takeAll).toBe(false);
+      for (const g of route.groups) {
+        const floor = Number(g.units.match(/^(\d+)/)![1]);
+        expect(g.unitsMin, `${route.id} / ${g.label}`).toBe(floor);
       }
     }
-  });
-
-  it("core units match the catalog's stated core totals", () => {
-    expect(byId("anthropology-aa-t").groups[0]!.units).toBe("9 units");
-    expect(byId("sociology-aa-t").groups[0]!.units).toBe("10 units");
-    expect(byId("psychology-aa-t").groups[0]!.units).toBe("11 units");
   });
 
   it("any course carrying a non-open access level explains why", () => {
@@ -85,63 +90,100 @@ describe("adt-routes — data integrity", () => {
       }
     }
   });
+
+  it("a choose-from group always offers at least one open option", () => {
+    for (const route of routes()) {
+      for (const g of route.groups.filter((g) => !g.takeAll)) {
+        const open = g.courses.filter((c) => c.access === "open");
+        expect(open.length, `${route.id} / ${g.label} has no open option`).toBeGreaterThan(0);
+      }
+    }
+  });
+});
+
+describe("adt-routes — availability from the live schedule", () => {
+  it("every route reports section counts for at least one subject", () => {
+    for (const route of routes()) {
+      expect(route.availability.subjects.length).toBeGreaterThan(0);
+      expect(route.availability.fall).toBeGreaterThan(0);
+      expect(route.availability.spring).toBeGreaterThan(0);
+    }
+  });
+
+  it("Administration of Justice has the deepest schedule", () => {
+    const aj = byId("administration-of-justice-as-t").availability;
+    for (const other of routes().filter((r) => r.id !== "administration-of-justice-as-t")) {
+      expect(aj.fall).toBeGreaterThan(other.availability.fall);
+    }
+  });
+
+  it("flags that Anthropology's core is not fully available in winter", () => {
+    const anth = byId("anthropology-aa-t");
+    expect(anth.availability.note).toMatch(/ANTH 3/);
+    expect(anth.watchOut).toMatch(/winter/i);
+  });
 });
 
 describe("adt-routes — the dual-enrollment reality", () => {
-  it("Anthropology's required core is entirely prerequisite-free", () => {
-    const core = byId("anthropology-aa-t").groups[0]!;
-    expect(core.courses.map((c) => c.code)).toEqual(["ANTH 1", "ANTH 2", "ANTH 3"]);
-    expect(core.courses.every((c) => c.access === "open")).toBe(true);
+  it("every route's required core is entirely prerequisite-free", () => {
+    for (const route of routes()) {
+      const core = route.groups.find((g) => g.label === "Required Core")!;
+      expect(
+        core.courses.every((c) => c.access === "open"),
+        `${route.id} core is not fully open`,
+      ).toBe(true);
+    }
+  });
+
+  it("Administration of Justice is completable with zero gated courses", () => {
+    const aj = byId("administration-of-justice-as-t");
+    expect(openUnits(aj)).toBeGreaterThanOrEqual(18);
+    expect(aj.watchOut).toMatch(/SOCI 101 and PSYC C1000/);
+  });
+
+  it("warns that AJ courses restricted to adults are excluded", () => {
+    const aj = byId("administration-of-justice-as-t");
+    expect(aj.watchOut).toMatch(/AJ 49/);
+    const codes = routeCourses(aj).map((c) => c.code);
+    for (const banned of ["AJ 49", "AJ 150", "AJ 155"]) {
+      expect(codes).not.toContain(banned);
+    }
+  });
+
+  it("History's core doubles into the CSU American Institutions requirement", () => {
+    const hist = byId("history-aa-t");
+    const core = hist.groups.find((g) => g.label === "Required Core")!;
+    expect(core.note).toMatch(/American Institutions/);
+    expect(core.courses.map((c) => c.code)).toEqual(["HIST C1001", "HIST C1002"]);
+  });
+
+  it("History flags the English-gated literature options in List B", () => {
+    const hist = byId("history-aa-t");
+    const gated = routeCourses(hist).filter((c) => c.access === "english-gated");
+    expect(gated.length).toBeGreaterThan(0);
+    expect(hist.watchOut).toMatch(/ENGL C1000/);
   });
 
   it("Anthropology offers a List A option that avoids statistics", () => {
     const listA = byId("anthropology-aa-t").groups.find((g) => g.label === "List A")!;
-    expect(listA.courses.some((c) => c.access === "open")).toBe(true);
     expect(listA.courses.find((c) => c.code === "ANTH 4")!.access).toBe("open");
   });
 
-  it("Sociology and Psychology both force a statistics course into the core", () => {
-    for (const id of ["sociology-aa-t", "psychology-aa-t"]) {
-      const core = byId(id).groups[0]!;
-      expect(core.courses.some((c) => c.access === "math-gated")).toBe(true);
+  it("ranks Administration of Justice first", () => {
+    expect(routesByAccessibility(routes())[0]!.id).toBe("administration-of-justice-as-t");
+  });
+
+  it("reports a substantial number of immediately-open units for every route", () => {
+    for (const route of routes()) {
+      expect(openUnits(route), route.id).toBeGreaterThanOrEqual(18);
     }
   });
 
-  it("Psychology's core is a three-term chain", () => {
-    const psych = byId("psychology-aa-t");
-    expect(psych.minCoreTerms).toBe(3);
-    const research = psych.groups[0]!.courses.find((c) => c.code === "PSYC 109B")!;
-    expect(research.access).toBe("sequenced");
-    expect(research.prereq).toMatch(/statistics/i);
-  });
-
-  it("flags PSYC 103 as the Area 1B trap", () => {
-    const listB = byId("psychology-aa-t").groups.find((g) => g.label === "List B")!;
-    const psyc103 = listB.courses.find((c) => c.code === "PSYC 103")!;
-    expect(psyc103.calGetcArea).toBe("Area 1B");
-    expect(psyc103.access).toBe("english-gated");
-    expect(byId("psychology-aa-t").watchOut).toMatch(/PHIL 105/);
-  });
-
-  it("ranks Anthropology as the most startable route", () => {
-    const ranked = routesByAccessibility(routes());
-    expect(ranked[0]!.id).toBe("anthropology-aa-t");
-    expect(ranked[ranked.length - 1]!.id).toBe("psychology-aa-t");
-  });
-
-  it("reports a positive number of immediately-open units for every route", () => {
+  it("uses ESTU, not ETHN, wherever Ethnic Studies appears", () => {
     for (const route of routes()) {
-      expect(openUnits(route)).toBeGreaterThan(0);
-    }
-    // Anthropology should be startable with the most open units of the three.
-    const open = Object.fromEntries(routes().map((r) => [r.id, openUnits(r)]));
-    expect(open["anthropology-aa-t"]).toBeGreaterThan(open["psychology-aa-t"]!);
-  });
-
-  it("shows most ADT courses double-count into a Cal-GETC area", () => {
-    for (const route of routes()) {
-      const withArea = routeCourses(route).filter((c) => c.calGetcArea);
-      expect(withArea.length).toBeGreaterThan(0);
+      for (const c of routeCourses(route)) {
+        expect(c.code.startsWith("ETHN")).toBe(false);
+      }
     }
   });
 });
