@@ -199,8 +199,8 @@ const EL_CAMINO: CollegeGates = {
   openCourses: [
     { code: "ANTH 1", title: "Introduction to Biological Anthropology", units: 3, areas: ["5B"], gradeBand: "9-10" },
     { code: "ANTH 2", title: "Introduction to Cultural Anthropology", units: 3, areas: ["4"], gradeBand: "9-10" },
-    { code: "ETHN 1", title: "Introduction to Ethnic Studies", units: 3, areas: ["6", "4"], gradeBand: "9-10" },
-    { code: "ETHN 3", title: "The Chicano in Contemporary U.S. Society", units: 3, areas: ["6", "4"], gradeBand: "9-10" },
+    { code: "ESTU 1", title: "Introduction to Ethnic Studies", units: 3, areas: ["6", "4"], gradeBand: "9-10" },
+    { code: "ESTU 3", title: "The Chicano in Contemporary U.S. Society", units: 3, areas: ["6", "4"], gradeBand: "9-10" },
     { code: "HIST 140", title: "History of Early Civilizations", units: 3, areas: ["3B", "4"], gradeBand: "9-10" },
     { code: "HIST 141", title: "History of Modern Civilizations", units: 3, areas: ["3B", "4"], gradeBand: "9-10" },
     { code: "CDEV 103", title: "Child Growth and Development", units: 3, areas: ["4"], gradeBand: "9-10" },

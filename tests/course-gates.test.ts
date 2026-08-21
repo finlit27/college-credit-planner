@@ -234,3 +234,28 @@ describe("course-gates — term caps and open courses", () => {
     }
   });
 });
+
+describe("course-gates — course codes match El Camino's live schedule subjects", () => {
+  /**
+   * Regression: the Cal-GETC advisement sheet and the Popular Courses PDF both
+   * spell this discipline "Ethnic Studies", which reads as ETHN. El Camino's
+   * actual subject code is ESTU. Searching the class schedule for ETHN returns
+   * zero sections in every term, so the wrong code sends a family to an empty
+   * result for a REQUIRED Cal-GETC area.
+   */
+  it("uses ESTU, not ETHN, for Ethnic Studies", () => {
+    const gates = getCollegeGates(EL_CAMINO)!;
+    const codes = gates.openCourses.map((c) => c.code);
+    expect(codes.some((c) => c.startsWith("ETHN"))).toBe(false);
+    expect(codes).toContain("ESTU 1");
+  });
+
+  it("every open course code uses a real El Camino subject prefix", () => {
+    const KNOWN = ["ANTH", "ESTU", "HIST", "CDEV", "AJ", "ASTR", "OCEA"];
+    const gates = getCollegeGates(EL_CAMINO)!;
+    for (const c of gates.openCourses) {
+      const prefix = c.code.split(" ")[0]!;
+      expect(KNOWN, `unknown subject prefix in ${c.code}`).toContain(prefix);
+    }
+  });
+});
