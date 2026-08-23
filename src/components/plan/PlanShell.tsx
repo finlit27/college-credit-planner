@@ -9,6 +9,7 @@ import { CommonMistakes } from "./CommonMistakes";
 import { ShareButton } from "./ShareButton";
 import { NarrativeBlock } from "./NarrativeBlock";
 import { WhatYouSkip } from "./WhatYouSkip";
+import { AssociateDegreeRoutes } from "./AssociateDegreeRoutes";
 import { NewsletterOptIn } from "./NewsletterOptIn";
 
 type PlanShellProps = {
@@ -60,7 +61,11 @@ export function PlanShell({ plan, shareId, initialNarrative }: PlanShellProps) {
       <div className="mt-12 max-w-3xl mx-auto space-y-6">
         <NarrativeBlock shareId={shareId} initial={initialNarrative} />
         <CollegeCard college={college} onlineOnly={online_only} />
-        <CourseSequence track={plan.major_track} />
+        <CourseSequence
+          track={plan.major_track}
+          collegeName={college.name}
+          grade={student.grade}
+        />
         <WhatYouSkip
           target={plan.target}
           unitTarget={plan.unit_target_at_graduation}
@@ -71,6 +76,10 @@ export function PlanShell({ plan, shareId, initialNarrative }: PlanShellProps) {
           targetKey={target.key}
         />
         <SavingsTable rows={plan.savings_table} targetKey={target.key} />
+        <AssociateDegreeRoutes
+          collegeName={college.name}
+          targetKey={target.key}
+        />
         <NewsletterOptIn studentName={student.name} />
         <ActionChecklist plan={plan} />
         <CommonMistakes mistakes={plan.common_mistakes} />

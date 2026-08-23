@@ -1,0 +1,161 @@
+{
+ "schema_version": 1,
+ "generated_at": "2026-08-19",
+ "student": {
+  "name": "Harper",
+  "grade": 12,
+  "gpa": 3.2,
+  "gpa_status": "ok"
+ },
+ "online_only": false,
+ "college": {
+  "name": "El Camino College",
+  "url": "https://www.elcamino.edu/academics/dual-enrollment/",
+  "summer_cap": 8,
+  "backup": "Santa Monica College",
+  "why": "Strong CCAP partnerships across South Bay high schools, 8-unit summer cap, solid online catalog.",
+  "region_label": "LA West / South Bay (Santa Monica, Torrance, Inglewood, Hawthorne)"
+ },
+ "major_track": {
+  "key": "social",
+  "label": "Social Sciences (Psychology, Sociology, Political Science, History)",
+  "sequence": [
+   {
+    "priority": 1,
+    "course": "English 1A",
+    "reason": "Cal-GETC Area 1. Always first"
+   },
+   {
+    "priority": 2,
+    "course": "Statistics",
+    "reason": "Cal-GETC Area 2. Required for most social science majors"
+   },
+   {
+    "priority": 3,
+    "course": "Psychology",
+    "reason": "Cal-GETC Area 4. Directly in major"
+   },
+   {
+    "priority": 4,
+    "course": "Sociology",
+    "reason": "Cal-GETC Area 4. Pairs well with Psych"
+   },
+   {
+    "priority": 5,
+    "course": "History (US or World)",
+    "reason": "Cal-GETC Area 3B or 4 depending on course"
+   }
+  ]
+ },
+ "target": {
+  "key": "csu",
+  "label": "CSU (California State University)",
+  "note": "The ADT (Associate Degree for Transfer) is your biggest lever. 60 transferable units + an ADT guarantees CSU admission as a junior with priority. True 2-year graduation is realistic. Target: complete Cal-GETC + major prep courses before high school graduation."
+ },
+ "grade_roadmap": [
+  {
+   "grade": 12,
+   "is_current": true,
+   "unit_target": "30–60 units",
+   "summer_action": "Summer before senior year: cement any remaining Cal-GETC gaps. By this summer you should have 25+ units already.",
+   "school_year_action": "Max out dual enrollment during senior year. If ADT is within reach, pursue it. The CSU admission guarantee is worth it. Request official transcripts from all CCCs attended by April.",
+   "milestone": "By high school graduation: 30–60 transferable units. Cal-GETC complete. ADT filed (if CSU-bound).",
+   "warning": "Apply for ADT by the deadline. It's not automatic. File with the Admissions office at your community college and have transcripts sent to CSU by the application deadline."
+  }
+ ],
+ "cal_getc_areas": [
+  {
+   "code": "Area 1",
+   "title": "English Communication",
+   "example": "English 1A"
+  },
+  {
+   "code": "Area 2",
+   "title": "Mathematical Concepts & Quantitative Reasoning",
+   "example": "Statistics or Calculus"
+  },
+  {
+   "code": "Area 3A",
+   "title": "Arts & Humanities (Arts)",
+   "example": "Art History, Music, Film, or Theater"
+  },
+  {
+   "code": "Area 3B",
+   "title": "Arts & Humanities (Humanities)",
+   "example": "Literature, Philosophy, or History"
+  },
+  {
+   "code": "Area 4",
+   "title": "Social & Behavioral Sciences",
+   "example": "Psychology, Sociology, or Economics"
+  },
+  {
+   "code": "Area 5A",
+   "title": "Physical & Biological Sciences (Physical)",
+   "example": "Chemistry, Physics, or Astronomy"
+  },
+  {
+   "code": "Area 5B",
+   "title": "Physical & Biological Sciences (Biological)",
+   "example": "Biology or Earth Science (w/ lab)"
+  }
+ ],
+ "savings_table": [
+  {
+   "units": 15,
+   "time": "~1 semester",
+   "csu": "$3,200",
+   "uc": "$7,200",
+   "private": "$32,500–$47,500"
+  },
+  {
+   "units": 30,
+   "time": "~1 year",
+   "csu": "$6,450",
+   "uc": "$14,436",
+   "private": "$65,000–$95,000"
+  },
+  {
+   "units": 45,
+   "time": "~1.5 years",
+   "csu": "$9,675",
+   "uc": "$21,654",
+   "private": "$97,500–$142,500"
+  },
+  {
+   "units": 60,
+   "time": "~2 years",
+   "csu": "$12,900",
+   "uc": "$28,872",
+   "private": "$130,000–$190,000"
+  }
+ ],
+ "common_mistakes": [
+  {
+   "number": 1,
+   "title": "Taking non-transferable courses",
+   "detail": "Every course must appear on ASSIST.org as transferable to UC or CSU before you enroll. Remedial math, ESL courses, and some vocational courses don't count. Verify first, always."
+  },
+  {
+   "number": 2,
+   "title": "Missing enrollment deadlines",
+   "detail": "Summer programs fill fast. Many close in March or April for June sessions. Set a calendar reminder each January to apply for the following summer."
+  },
+  {
+   "number": 3,
+   "title": "Exceeding unit caps without checking",
+   "detail": "Enrolling in more units than your CCAP or concurrent enrollment agreement allows can result in dropped enrollment or loss of fee waiver. Confirm your cap with both your high school counselor and the community college each semester."
+  },
+  {
+   "number": 4,
+   "title": "Letting AP and dual enrollment overlap",
+   "detail": "If you're taking AP Psychology, don't also take Psych 1 at a CCC. You can't use both for the same Cal-GETC area. Use AP for subjects where you have the strongest shot at a 4 or 5; use CCC for subjects with no AP option."
+  },
+  {
+   "number": 5,
+   "title": "Forgetting to request official transcripts",
+   "detail": "Units only transfer if the receiving college gets an official transcript from the CCC. Request transcripts from every community college attended before submitting your college application. This step trips up more families than almost anything else."
+  }
+ ],
+ "unit_target_at_graduation": "30–45 units"
+}

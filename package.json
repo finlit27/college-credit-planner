@@ -10,7 +10,8 @@
     "test": "vitest run",
     "test:watch": "vitest",
     "test:ui": "vitest --ui",
-    "sync-colleges": "tsx scripts/sync-colleges.ts"
+    "sync-colleges": "tsx scripts/sync-colleges.ts",
+    "gen-preview-fixtures": "tsx scripts/gen-preview-fixtures.ts"
   },
   "dependencies": {
     "@upstash/redis": "^1.38.0",
