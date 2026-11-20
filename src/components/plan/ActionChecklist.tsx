@@ -106,7 +106,7 @@ export function ActionChecklist({ plan }: Props) {
       </p>
 
       <h2 className="mt-2 font-serif text-2xl sm:text-3xl text-[#1B4332] font-semibold leading-tight">
-        What to actually do, in order
+        Steps to test with your counselor, in order
       </h2>
 
       <div className="mt-6 space-y-6">

@@ -60,8 +60,8 @@ export function AssociateDegreeRoutes({ collegeName, targetKey }: Props) {
         </strong>{" "}
         is better.{" "}
         {csuBound
-          ? "60 transferable units plus an ADT guarantees you CSU admission as a junior, with priority consideration."
-          : "It guarantees CSU admission as a junior with priority consideration, and the coursework still counts if you choose UC instead."}{" "}
+          ? "An ADT is built to give you junior standing and priority consideration at CSU. Check the conditions on your college's ADT page."
+          : "An ADT is built to give you junior standing and priority consideration at CSU. Check the conditions on your college's ADT page. The coursework still counts if you choose UC instead."}{" "}
         These three at {collegeName} are the ones a high schooler can realistically
         make progress on, because most of their courses have no prerequisite.
       </p>

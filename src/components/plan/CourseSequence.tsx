@@ -31,7 +31,7 @@ export function CourseSequence({ track, collegeName, grade }: Props) {
       </h2>
 
       <p className="mt-2 text-sm text-[#6B7280] leading-relaxed">
-        Take them in this order. Each course is on the standard UC and CSU
+        Here is the order many families use. Check it with your counselor. Each course is on the standard UC and CSU
         transfer list. The badges show which ones double as major prereqs.
         Those count twice: they clear a Cal-GETC requirement AND a
         prerequisite you would otherwise take freshman year of college.
