@@ -29,7 +29,8 @@ export const TARGETS: Record<TargetKey, Target> = {
     label: "CSU (California State University)",
     note:
       "The ADT (Associate Degree for Transfer) is your biggest lever. " +
-      "60 transferable units + an ADT guarantees CSU admission as a junior with priority. " +
+      "60 transferable units + an ADT is built to give your teen junior standing and priority consideration at CSU. " +
+      "Check the conditions (GPA, major match, impacted campuses) on your college's ADT page. " +
       "True 2-year graduation is realistic. Target: complete Cal-GETC + major prep courses " +
       "before high school graduation.",
   },

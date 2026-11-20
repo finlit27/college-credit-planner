@@ -49,7 +49,7 @@ export const GRADE_PLANS: Record<GradeLevel, GradePlan> = {
     summer_action:
       "Summer before senior year: cement any remaining Cal-GETC gaps. By this summer you should have 25+ units already.",
     school_year_action:
-      "Max out dual enrollment during senior year. If ADT is within reach, pursue it. The CSU admission guarantee is worth it. Request official transcripts from all CCCs attended by April.",
+      "Max out dual enrollment during senior year. If ADT is within reach, pursue it. An ADT is built to give your teen junior standing and priority consideration at CSU. Check the conditions (GPA, major match, impacted campuses) on your college's ADT page. Request official transcripts from all CCCs attended by April.",
     milestone:
       "By high school graduation: 30–60 transferable units. Cal-GETC complete. ADT filed (if CSU-bound).",
     warning:

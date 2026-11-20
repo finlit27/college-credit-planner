@@ -2,8 +2,8 @@
  * Associate Degree for Transfer (ADT) routes for dual-enrollment students.
  *
  * An ADT is the highest-leverage thing a dual-enrollment student can aim at:
- * 60 CSU-transferable units plus an ADT guarantees CSU admission as a junior
- * with priority consideration. TARGETS.csu already tells families this. What
+ * 60 CSU-transferable units plus an ADT is built to give junior standing
+ * and priority consideration at CSU. TARGETS.csu already tells families this. What
  * the plan never showed them is which degree to actually walk toward, or
  * which courses in it a high schooler can register for.
  *
