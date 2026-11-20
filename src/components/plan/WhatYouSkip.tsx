@@ -48,7 +48,7 @@ export function WhatYouSkip({ target, unitTarget }: Props) {
 
 const PUNCHLINES: Record<Plan["target"]["key"], string> = {
   uc: "You walk into UC with the intro grind already behind you.",
-  csu: "Junior standing on day one. Two-year graduation is the play.",
+  csu: "Junior standing on day one is the goal. Check the conditions with your counselor.",
   private:
     "More flexibility at every private school. Verify the credit policy at each one.",
   undecided: "Doors stay open. UC, CSU, and private all accept this work.",

@@ -21,7 +21,7 @@ export function StepGrade({ name, value, onChange }: Props) {
   return (
     <StepShell
       title={`${greeting} What grade are you in?`}
-      subtitle="The earlier you start, the more credit you can stack before high school graduation."
+      subtitle="Practice before it counts. Build a plan and share it with your counselor."
     >
       <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
         {GRADES.map((g) => (

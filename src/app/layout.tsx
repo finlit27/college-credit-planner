@@ -21,7 +21,7 @@ const playfair = Playfair_Display({
 export const metadata: Metadata = {
   title: "College Credit Planner | FinLit Garden",
   description:
-    "Build a free, personalized plan to graduate high school with up to two years of free college credit using dual enrollment at your local California community college.",
+    "Every family its own CFO. See which college courses you can take in high school through dual enrollment at your local California community college, and what each one saves.",
   keywords: [
     "dual enrollment",
     "college credit",
@@ -34,8 +34,14 @@ export const metadata: Metadata = {
   openGraph: {
     title: "College Credit Planner | FinLit Garden",
     description:
-      "A free, personalized plan to graduate high school with up to two years of free college credit.",
+      "Every family its own CFO. See which college courses you can take in high school, and what each one saves.",
     siteName: "FinLit Garden",
+  },
+  twitter: {
+    card: "summary",
+    title: "College Credit Planner | FinLit Garden",
+    description:
+      "Every family its own CFO. See which college courses you can take in high school, and what each one saves.",
   },
 };
 
